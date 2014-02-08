@@ -2,11 +2,13 @@ LccDirectory::Application.routes.draw do
   get "admin/add"
   get "admin/edit"
   get "admin/delete"
-  get "directory/home"
-  get "directory/login"
-  get "directory/search"
-  get "directory/view"
-  get "directory/edit"
+
+  root 'directory#home'
+  match '/login', to: 'directory#login', via 'get'
+  match '/search', to: 'directory#search', via 'get'
+  match '/view', to: 'directory#view', via 'get'
+  match '/edit', to: 'directory#edit', via 'get'
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

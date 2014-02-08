@@ -1,4 +1,9 @@
 LccDirectory::Application.routes.draw do
+  get "directory/home"
+  get "directory/login"
+  get "directory/search"
+  get "directory/view"
+  get "directory/edit"
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

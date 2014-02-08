@@ -1,4 +1,7 @@
 LccDirectory::Application.routes.draw do
+  get "admin/add"
+  get "admin/edit"
+  get "admin/delete"
   get "directory/home"
   get "directory/login"
   get "directory/search"

@@ -1,2 +1,6 @@
-<h1>Directory#home</h1>
-<p>Find me in app/views/directory/home.html.erb</p>
+<h1>LCC Online Directory</h1>
+<% if !current_user.nil? %>
+  Current user is <%= current_user.name %>
+<% end %>
+<br/>
+<p>Woop!</p>

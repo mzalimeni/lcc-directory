@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       # Sign the user in and redirect to the search page
       sign_in user
-      redirect_to root
+      redirect_to root_url
     else
       # Create an error message and re-render the signin form
       flash.now[:error] = 'Invalid email/password combination'
@@ -17,6 +17,8 @@ class SessionsController < ApplicationController
   end
   
   def destroy
+    sign_out
+    redirect_to root_url
   end
 
 end

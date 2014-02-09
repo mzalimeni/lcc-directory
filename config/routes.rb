@@ -9,6 +9,8 @@ LccDirectory::Application.routes.draw do
   match '/view', to: 'directory#view', via: 'get'
   match '/edit', to: 'directory#edit', via: 'get'
   
+  resources :users
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

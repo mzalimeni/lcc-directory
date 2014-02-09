@@ -50,6 +50,7 @@ class UsersController < ApplicationController
       unless signed_in?
         store_location
         redirect_to signin_url, notice: "Please sign in."
+      end
     end
 
     def admin_user

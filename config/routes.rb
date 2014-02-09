@@ -1,15 +1,18 @@
 LccDirectory::Application.routes.draw do
-  get "admin/add"
-  get "admin/edit"
-  get "admin/delete"
+  
 
   root 'directory#home'
-  match '/login', to: 'directory#login', via: 'get'
-  match '/search', to: 'directory#search', via: 'get'
-  match '/view', to: 'directory#view', via: 'get'
-  match '/edit', to: 'directory#edit', via: 'get'
+  
+  match '/login',   to: 'directory#login',	via: 'get'
+  match '/search',  to: 'directory#search', 	via: 'get'
+  match '/view',    to: 'directory#view', 	via: 'get'
+  match '/edit',    to: 'directory#edit', 	via: 'get'
   
   resources :users
+
+  resources :sessions, only: [:new, :create, :destroy]
+  match '/signin',  to: 'sessions#new',         via: 'get'
+  match '/signout', to: 'sessions#destroy',     via: 'delete'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

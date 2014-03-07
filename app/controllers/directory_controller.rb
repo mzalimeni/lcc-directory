@@ -6,11 +6,6 @@ class DirectoryController < ApplicationController
   end
 
   def search
-  end
-
-  def view
-  end
-
-  def edit
+    
   end
 end

@@ -1,4 +1,7 @@
 class UsersController < RestrictedController
+  before_action :signed_in_user, only: [:edit, :update, :create, :destroy]
+  before_action :correct_user,   only: [:edit, :update]
+  before_action :admin_user,     only: [:create, :destroy]
 
   def create
     @user = User.new(user_params)

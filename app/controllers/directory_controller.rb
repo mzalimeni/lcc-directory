@@ -4,8 +4,4 @@ class DirectoryController < ApplicationController
 
   def login
   end
-
-  def search
-    
-  end
 end

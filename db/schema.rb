@@ -11,7 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140209200052) do
+ActiveRecord::Schema.define(version: 20140308021034) do
+
+  create_table "families", force: true do |t|
+    t.integer  "head_id"
+    t.date     "anniversary"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "members", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "preferred_name"
+    t.string   "street_address"
+    t.string   "city"
+    t.string   "state"
+    t.integer  "postal_code"
+    t.string   "email"
+    t.string   "mobile_phone"
+    t.string   "home_phone"
+    t.string   "work_phone"
+    t.integer  "primary_phone"
+    t.date     "birthday"
+    t.integer  "family_id"
+    t.integer  "spouse_id"
+    t.boolean  "directory_public"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "name"

@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 
   validates :first_name, presence: true,
             length: {maximum: 20},
-            format: {with: ModelsHelper}
+            format: {with: VALID_NAME_REGEX}
   validates :last_name, presence: true,
             length: {maximum: 20},
             format: {with: VALID_NAME_REGEX}

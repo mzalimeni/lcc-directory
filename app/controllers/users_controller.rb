@@ -15,6 +15,11 @@ class UsersController < RestrictedController
  
   def show
     @user = User.find(params[:id])
+    unless @user.directory_public
+      if signed_in_user
+        # if member is public or user is signed in, allow view - otherwise this forces sign-in, so we're good
+      end
+    end
   end
 
   def edit

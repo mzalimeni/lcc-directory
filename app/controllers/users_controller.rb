@@ -29,18 +29,20 @@ class UsersController < RestrictedController
   end
 
   def search
-    @q = params[:q].gsub(/[^a-zA-Z ]/i, '').gsub(/ +/, ' ') #normalize input to single space alpha
-    @user = User.find_by(first_name: @q.split[0], last_name: @q.split[1])
-    if @user.nil?
-      search_users_with @q
+    @q = params[:q].gsub(/[^a-zA-Z ]/i, '').gsub(/ +/, ' ') # normalize input to single space alpha
+
+    find_users_matching @q
+    if @users.size == 1
+      redirect_to @users[0]
+    else
+      # we've got zero or more than one match, so the shortcut failed - go ahead with full 'like' search
+      find_users_like @q
       if @users.blank?
         flash[:warning] = 'Sorry, no members matched your search'
         redirect_to root_path
       else
-        return_results @users
+        prepare_to_return @users
       end
-    else
-      redirect_to @user
     end
   end
 
@@ -82,7 +84,7 @@ class UsersController < RestrictedController
       end
     end
 
-    def return_results(users)
+    def prepare_to_return(users)
       @users = @users.sort_by! {|user| user.first_name}
       @users = @users.paginate(page: params[:page])
     end

@@ -38,9 +38,14 @@ class UsersController < RestrictedController
 
   private
 
+    BASIC_USER_PARAMS = :first_name, :last_name, :preferred_name, :email, :password, :password_confirmation
+    ADMIN_USER_PARAMS = :admin, :family_id
     def user_params
-      params.require(:user).permit(:name, :email, :password,
-      				   :password_confirmation)
+      if :admin_user
+        params.require(:user).permit(BASIC_USER_PARAMS + ADMIN_USER_PARAMS)
+      else
+        params.require(:user).permit(BASIC_USER_PARAMS)
+      end
     end
 
 end

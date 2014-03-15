@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140308021034) do
+ActiveRecord::Schema.define(version: 20140308055159) do
 
   create_table "families", force: true do |t|
     t.integer  "head_id"
@@ -39,19 +39,12 @@ ActiveRecord::Schema.define(version: 20140308021034) do
     t.boolean  "directory_public"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "users", force: true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "password_digest"
     t.string   "remember_token"
-    t.boolean  "admin",           default: false
+    t.boolean  "admin",            default: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["remember_token"], name: "index_users_on_remember_token"
+  add_index "members", ["email"], name: "index_members_on_email", unique: true
+  add_index "members", ["remember_token"], name: "index_members_on_remember_token"
 
 end

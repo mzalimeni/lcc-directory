@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140308055159) do
+ActiveRecord::Schema.define(version: 20140315031747) do
 
   create_table "families", force: true do |t|
     t.integer  "head_id"
@@ -20,7 +20,13 @@ ActiveRecord::Schema.define(version: 20140308055159) do
     t.datetime "updated_at"
   end
 
-  create_table "members", force: true do |t|
+  create_table "users", force: true do |t|
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "password_digest"
+    t.string   "remember_token"
+    t.boolean  "admin",            default: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "preferred_name"
@@ -28,23 +34,22 @@ ActiveRecord::Schema.define(version: 20140308055159) do
     t.string   "city"
     t.string   "state"
     t.integer  "postal_code"
-    t.string   "email"
-    t.string   "mobile_phone"
-    t.string   "home_phone"
-    t.string   "work_phone"
-    t.integer  "primary_phone"
+    t.integer  "mobile_phone"
+    t.integer  "home_phone"
+    t.integer  "work_phone"
+    t.integer  "primary_phone",    default: 0
     t.date     "birthday"
     t.integer  "family_id"
     t.integer  "spouse_id"
-    t.boolean  "directory_public"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "password_digest"
-    t.string   "remember_token"
-    t.boolean  "admin",            default: false
+    t.boolean  "directory_public", default: false
   end
 
-  add_index "members", ["email"], name: "index_members_on_email", unique: true
-  add_index "members", ["remember_token"], name: "index_members_on_remember_token"
+  add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["family_id"], name: "index_users_on_family_id"
+  add_index "users", ["first_name"], name: "index_users_on_first_name"
+  add_index "users", ["last_name"], name: "index_users_on_last_name"
+  add_index "users", ["preferred_name"], name: "index_users_on_preferred_name"
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token"
+  add_index "users", ["spouse_id"], name: "index_users_on_spouse_id"
 
 end

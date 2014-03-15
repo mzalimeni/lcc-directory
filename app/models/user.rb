@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 
   validates :first_name, presence: true,
             length: {maximum: 20},
-            format: {with: VALID_NAME_REGEX}
+            format: {with: ModelsHelper}
   validates :last_name, presence: true,
             length: {maximum: 20},
             format: {with: VALID_NAME_REGEX}
@@ -35,9 +35,9 @@ class User < ActiveRecord::Base
   validates :email, presence: true,
             format: {with: VALID_EMAIL_REGEX},
             uniqueness: {case_sensitive: false}
-  validates :mobile_phone, length: {in: 9..10}
-  validates :home_phone, length: {in: 10..11}
-  validates :work_phone, length: {in: 10..11}
+  validates :mobile_phone, format: {with: VALID_PHONE_REGEX}
+  validates :home_phone, format: {with: VALID_PHONE_REGEX}
+  validates :work_phone, format: {with: VALID_PHONE_REGEX}
   validates :primary_phone, numericality: {greater_than: -1,
                                            less_than: 3}
   validates :password, length: {minimum: 6}

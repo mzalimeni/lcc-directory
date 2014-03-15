@@ -15,15 +15,10 @@ class UsersController < RestrictedController
  
   def show
     @user = User.find(params[:id])
-    unless @user.directory_public
-      if signed_in_user
-        # if member is public or user is signed in, allow view - otherwise this forces sign-in, so we're good
-      end
-    end
   end
 
   def edit
-    # @user defined by before filters
+    # @user defined by before filters in RestrictedController
   end
 
   def update
@@ -51,12 +46,12 @@ class UsersController < RestrictedController
       :directory_public,
       :password, :password_confirmation
     ADMIN_USER_PARAMS = :admin, :family_id, :spouse_id
-    def user_params
-      if admin_user
-        params.require(:user).permit(BASIC_USER_PARAMS + ADMIN_USER_PARAMS)
-      else
-        params.require(:user).permit(BASIC_USER_PARAMS)
+      def user_params
+        if admin_user
+          params.require(:user).permit(BASIC_USER_PARAMS + ADMIN_USER_PARAMS)
+        else
+          params.require(:user).permit(BASIC_USER_PARAMS)
+        end
       end
-    end
 
 end

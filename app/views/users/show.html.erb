@@ -1,2 +1,9 @@
 <% provide(:title, @user.full_name) %>
-<h1><%= @user.full_name %></h1>
+<h2><%= @user.full_name %></h2>
+<%= @user.email %>
+<%= @user.street_address %>
+<%= @user.city + ', ' + @user.state + ' ' + @user.postal_code %>
+<%= @user.mobile_phone %><%= primary_phone === 0 ? "(Primary)" : "" %>
+<%= @user.home_phone %><%= primary_phone === 1 ? "(Primary)" : "" %>
+<%= @user.work_phone %><%= primary_phone === 2 ? "(Primary)" : "" %>
+<%= @user.birthday %>

@@ -47,7 +47,7 @@ class UsersController < RestrictedController
 
   private
 
-    BASIC_USER_PARAMS = :first_name, :last_name, :preferred_name,
+    BASE_USER_PARAMS = :first_name, :last_name, :preferred_name,
       :email,
       :street_address, :city, :state, :postal_code,
       :mobile_phone, :home_phone, :work_phone, :primary_phone,

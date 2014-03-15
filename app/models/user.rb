@@ -53,7 +53,8 @@ class User < ActiveRecord::Base
   validates :work_phone, length: {is: 10},
             allow_nil: true
   validates :primary_phone, numericality: {in: 0..2}
-  validates :password, length: {minimum: 6}
+  validates :password, length: {minimum: 6, if: :changing_password?},
+            confirmation: {if: :changing_password?}
 
   def User.new_remember_token
     SecureRandom.urlsafe_base64
@@ -75,6 +76,10 @@ class User < ActiveRecord::Base
 
     def create_remember_token
       self.remember_token = User.encrypt(User.new_remember_token)
+    end
+
+    def changing_password?
+      password.present? || password_confirmation.present?
     end
 
 end

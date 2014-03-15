@@ -9,6 +9,9 @@
 <%= f.label :preferred_name %>
 <%= f.text_field :preferred_name %>
 
+<%= f.label :email %>
+<%= f.text_field :email %>
+
 <%= f.label :street_address %>
 <%= f.text_field :street_address %>
 
@@ -31,13 +34,29 @@
 <%= f.text_field :work_phone %>
 
 <%= f.label :primary_phone %>
-<%= f.radio_button :primary_phone %>
+<%= f.radio_button :primary_phone, "Mobile", value: 0 %>
+<%= f.radio_button :primary_phone, "Home", value: 1 %>
+<%= f.radio_button :primary_phone, "Work", value: 2 %>
 
-<%= f.label :email %>
-<%= f.text_field :email %>
+<%= f.label :birthday %>
+<%= f.date_field :birthday %>
+
+<%= f.label :directory_public, "Make profile public" %>
+<%= f.check_box :directory_public %>
 
 <%= f.label :password %>
 <%= f.password_field :password %>
 
 <%= f.label :password_confirmation, "Confirm Password" %>
 <%= f.password_field :password_confirmation %>
+
+<% if admin_user? %>
+    <%= f.label :directory_public, "Make profile public" %>
+    <%= f.check_box :directory_public %>
+
+    <%= f.label :family_id %>
+    <%= number_field :family_id, in: 1..9999 %>
+
+    <%= f.label :spouse_id %>
+    <%= number_field :spouse_id, in: 1..9999 %>
+<% end %>

@@ -1,4 +1,6 @@
 class UsersController < RestrictedController
+  include UsersHelper
+
   before_action :signed_in_user, only: [:edit, :update, :create, :destroy]
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: [:create, :destroy]
@@ -6,7 +8,7 @@ class UsersController < RestrictedController
   def create
     @user = User.new(user_params)
     if @user.save
-      flash[:success] = "User successfully created!"
+      flash[:success] = 'User successfully created!'
       redirect_to @user
     else
       render 'new'
@@ -22,8 +24,24 @@ class UsersController < RestrictedController
     end
   end
 
-  def view
+  def all
     @users = User.paginate(page: params[:page])
+  end
+
+  def search
+    @q = params[:q].gsub(/[^a-zA-Z ]/i, '').gsub(/ +/, ' ') #normalize input to single space alpha
+    @user = User.find_by(first_name: @q.split[0], last_name: @q.split[1])
+    if @user.nil?
+      search_users_with @q
+      if @users.blank?
+        flash[:warning] = 'Sorry, no members matched your search'
+        redirect_to root_path
+      else
+        return_results @users
+      end
+    else
+      redirect_to @user
+    end
   end
 
   def edit
@@ -32,7 +50,8 @@ class UsersController < RestrictedController
 
   def update
     if @user.update_attributes(user_params)
-      flash[:success] = "Profile updated"
+      flash[:success] = 'Profile updated'
+      @_users_updated = true
       redirect_to @user 
     else
       render 'edit'
@@ -41,13 +60,13 @@ class UsersController < RestrictedController
 
   def destroy
     User.find(params[:id]).destroy
-    flash[:success] = "User deleted."
+    flash[:success] = 'User deleted.'
     redirect_to admin_url
   end
 
   private
 
-    BASE_USER_PARAMS = :first_name, :last_name, :preferred_name,
+    BASIC_USER_PARAMS = :first_name, :last_name, :preferred_name,
       :email,
       :street_address, :city, :state, :postal_code,
       :mobile_phone, :home_phone, :work_phone, :primary_phone,
@@ -55,12 +74,17 @@ class UsersController < RestrictedController
       :directory_public,
       :password, :password_confirmation
     ADMIN_USER_PARAMS = :admin, :family_id, :spouse_id
-      def user_params
-        if admin_user
-          params.require(:user).permit(BASIC_USER_PARAMS + ADMIN_USER_PARAMS)
-        else
-          params.require(:user).permit(BASIC_USER_PARAMS)
-        end
+    def user_params
+      if admin_user
+        params.require(:user).permit(BASIC_USER_PARAMS + ADMIN_USER_PARAMS)
+      else
+        params.require(:user).permit(BASIC_USER_PARAMS)
       end
+    end
+
+    def return_results(users)
+      @users = @users.sort_by! {|user| user.first_name}
+      @users = @users.paginate(page: params[:page])
+    end
 
 end

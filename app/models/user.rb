@@ -28,30 +28,30 @@ class User < ActiveRecord::Base
   validates :preferred_name, length: {maximum: 20},
             format: {with: VALID_NAME_REGEX,
                         message: "%{value} is not a valid name"},
-            allow_nil: true
+            allow_blank: true
   validates :street_address, format: {with: VALID_STREET_REGEX,
                         message: "%{value} is not a valid street address"},
-            allow_nil: true
+            allow_blank: true
   validates :city, length: {maximum: 30},
             format: {with: VALID_CITY_REGEX,
                         message: "%{value} is not a valid city"},
-            allow_nil: true
+            allow_blank: true
   validates :state, length: {is: 2},
             inclusion: {in: %w(AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY),
                         message: "%{value} is not a valid state"},
-            allow_nil: true
+            allow_blank: true
   validates :postal_code, length: {is: 5},
-            allow_nil: true
+            allow_blank: true
   validates :email, presence: true,
             format: {with: VALID_EMAIL_REGEX,
                         message: "%{value} is not a valid email"},
             uniqueness: {case_sensitive: false}
   validates :mobile_phone, length: {is: 10},
-            allow_nil: true
+            allow_blank: true
   validates :home_phone, length: {is: 10},
-            allow_nil: true
+            allow_blank: true
   validates :work_phone, length: {is: 10},
-            allow_nil: true
+            allow_blank: true
   validates :primary_phone, numericality: {in: 0..2}
   validates :password, length: {minimum: 6, if: :changing_password?},
             confirmation: {if: :changing_password?}

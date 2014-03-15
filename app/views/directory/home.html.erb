@@ -1,6 +1,4 @@
 <h1>LCC Online Directory</h1>
-<% unless current_user.nil? %>
-  Current user is <%= current_user.full_name %>
-<% end %>
 <br/>
-<p>Woop!</p>
+<br/>
+<%= render 'search_form' %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140315031747) do
+ActiveRecord::Schema.define(version: 20140315110658) do
 
   create_table "families", force: true do |t|
     t.integer  "head_id"
@@ -34,9 +34,9 @@ ActiveRecord::Schema.define(version: 20140315031747) do
     t.string   "city"
     t.string   "state"
     t.integer  "postal_code"
-    t.integer  "mobile_phone"
-    t.integer  "home_phone"
-    t.integer  "work_phone"
+    t.string   "mobile_phone"
+    t.string   "home_phone"
+    t.string   "work_phone"
     t.integer  "primary_phone",    default: 0
     t.date     "birthday"
     t.integer  "family_id"

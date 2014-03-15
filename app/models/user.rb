@@ -35,9 +35,9 @@ class User < ActiveRecord::Base
   validates :email, presence: true,
             format: {with: VALID_EMAIL_REGEX},
             uniqueness: {case_sensitive: false}
-  validates :mobile_phone, format: {with: VALID_PHONE_REGEX}
-  validates :home_phone, format: {with: VALID_PHONE_REGEX}
-  validates :work_phone, format: {with: VALID_PHONE_REGEX}
+  validates :mobile_phone, length: {is: 10}
+  validates :home_phone, length: {is: 10}
+  validates :work_phone, length: {is: 10}
   validates :primary_phone, numericality: {greater_than: -1,
                                            less_than: 3}
   validates :password, length: {minimum: 6}

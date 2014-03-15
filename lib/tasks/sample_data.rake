@@ -23,9 +23,11 @@ namespace :db do
       email = "example-#{n+1}@lccdirectory.foo"
       street_address = Faker::Address.street_address
       city = Faker::Address.city
-      state = Faker::Address.state_abbr
+      state = %w(AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN
+                MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA
+                WA WV WI WY).sample
       postal_code = Faker::Address.postcode
-      mobile_number = rand(6141000000..6149999999)
+      mobile_phone = rand(6141000000..6149999999)
       home_phone = rand(6141000000..6149999999)
       work_phone = rand(6141000000..6149999999)
       primary_phone = rand(0..2)
@@ -36,6 +38,15 @@ namespace :db do
                    last_name: last_name,
                    email: email,
                    street_address: street_address,
+                   city: city,
+                   state: state,
+                   postal_code: postal_code,
+                   mobile_phone: mobile_phone,
+                   home_phone: home_phone,
+                   work_phone: work_phone,
+                   primary_phone: primary_phone,
+                   birthday: birthday,
+                   directory_public: directory_public,
                    password: password,
                    password_confirmation: password)
     end

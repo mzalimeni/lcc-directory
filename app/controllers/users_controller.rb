@@ -22,6 +22,10 @@ class UsersController < RestrictedController
     end
   end
 
+  def view
+    @users = User.paginate(page: params[:page])
+  end
+
   def edit
     # @user defined by before filters in RestrictedController
   end

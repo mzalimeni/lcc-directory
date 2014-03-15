@@ -4,8 +4,4 @@ class DirectoryController < ApplicationController
 
   def login
   end
-
-  def view
-    @users = User.paginate(page: params[:page])
-  end
 end

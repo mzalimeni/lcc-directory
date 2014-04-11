@@ -1,9 +1,11 @@
 <% provide(:title, @user.full_name) %>
-<h2><%= @user.full_name %></h2>
-<%= @user.email %>
-<%= @user.street_address %>
-<%= @user.city + ', ' + @user.state + ' ' + @user.postal_code.to_s %>
-<%= @user.mobile_phone %><%= @user.primary_phone === 0 ? "(Primary)" : "" %>
-<%= @user.home_phone %><%= @user.primary_phone === 1 ? "(Primary)" : "" %>
-<%= @user.work_phone %><%= @user.primary_phone === 2 ? "(Primary)" : "" %>
-<%= @user.birthday %>
+<address>
+  <strong><%= @user.full_name %></strong><br>
+  <a href="mailto:#"><%= @user.email %></a>
+  <abbr title="Mobile">C:</abbr><%= @user.mobile_phone %><%= @user.primary_phone === 0 ? "(Primary)" : "" %><br>
+  <abbr title="Home">H:</abbr><%= @user.home_phone %><%= @user.primary_phone === 1 ? "(Primary)" : "" %><br>
+  <abbr title="Work">W:</abbr><%= @user.work_phone %><%= @user.primary_phone === 2 ? "(Primary)" : "" %><br>
+  <%= @user.street_address %><br>
+  <%= @user.city + ', ' + @user.state + ' ' + @user.postal_code.to_s %><br>
+  <%= @user.birthday %><br>
+</address>

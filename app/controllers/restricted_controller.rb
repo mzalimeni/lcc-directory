@@ -4,15 +4,19 @@ class RestrictedController < ApplicationController
 
     #Before filters
 
-    def signed_in_user
+    def signed_in_user(notice="Please sign in")
       unless signed_in?
         store_location
-        redirect_to signin_url, notice: "Please sign in."
+        flash[:warning] = notice
+        redirect_to signin_url
       end
     end
 
     def admin_user
-      redirect_to root_url notice: "Sorry, you are not an administrator." unless current_user.admin?
+      unless current_user.admin?
+        flash[:warning] = "Sorry, you're not an administrator"
+        redirect_to root_url
+      end
     end
 
     def correct_user

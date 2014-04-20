@@ -1,18 +1,14 @@
-<header class="navbar navbar-fixed-top">
+<header class="navbar-inverse">
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to "LCC Directory", root_path, id: "logo" %>
-      <nav>
-        <ul class="nav pull-left">
-          <% unless current_user.nil? %>
-            <li>Logged in as <%= current_user.full_name %></li>
-          <% end %>
-        </ul>
-        <ul class="nav pull-right">
-          <li><%= link_to "Home", root_path %></li>
+      <div id="logo"><%= link_to image_tag("logo.png", alt: "Life Community Church"), root_path %></div>
+      <nav class="nav navbar-nav">
+        <div class="nav navbar-right">
           <% if signed_in? %>
             <% unless @user.blank? %>
-              <li><%= link_to "Edit", edit_user_path(@user) %></li>
+              <% if current_user? || admin_user? %>
+                <li><%= link_to "Edit", edit_user_path(@user) %></li>
+              <% end %>
             <% end %>
             <li id="fat-menu" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -29,8 +25,8 @@
           <% else %>
             <li><%= link_to "Sign in", signin_path %></li>
           <% end %>
-        </ul>
+        </div>
       </nav>
+      </div>
     </div>
-  </div>
 </header>

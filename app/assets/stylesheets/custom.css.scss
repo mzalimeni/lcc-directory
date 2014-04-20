@@ -18,7 +18,8 @@ html {
 }
 
 body {
-  padding-top: 60px;
+  /* padding-top: 20px; */
+  max-width: 428px;
 }
 
 section {
@@ -73,7 +74,7 @@ p {
   color: white;
   text-transform: uppercase;
   letter-spacing: -1px;
-  padding-top: 9px;
+  padding: 9px;
   font-weight: bold;
   line-height: 1;
   &:hover {
@@ -110,6 +111,10 @@ footer {
 
 /* miscellaneous */
 
+.alert {
+  margin-top: 10px;
+}
+
 .debug_dump {
   clear: both;
   float: left;
@@ -142,11 +147,6 @@ aside {
   }
 }
 
-.gravatar {
-  float: left;
-  margin-right: 10px;
-}
-
 .stats {
   overflow: auto;
   a {
@@ -165,14 +165,6 @@ aside {
   }
   strong {
     display: block;
-  }
-}
-
-.user_avatars {
-  overflow: auto;
-  margin-top: 10px;
-  .gravatar {
-    margin: 1px 1px;
   }
 }
 
@@ -213,31 +205,4 @@ input, textarea, select, .uneditable-input {
   }
 }
 
-/* microposts */
-
-.microposts {
-  list-style: none;
-  margin: 10px 0 0 0;
-
-  li {
-    padding: 10px 0;
-    border-top: 1px solid #e8e8e8;
-  }
-}
-.content {
-  display: block;
-}
-.timestamp {
-  color: $gray-light;
-}
-.gravatar {
-  float: left;
-  margin-right: 10px;
-}
-aside {
-  textarea {
-    height: 100px;
-    margin-bottom: 5px;
-  }
-}
 

@@ -1,5 +1,6 @@
-<%= form_tag("/search", method: "get") do %>
-    <%= label_tag(:q, "Search for people:") %>
-    <%= text_field_tag(:q) %>
-    <%= submit_tag("Search") %>
-<% end %>
+<div class="form-group">
+  <%= form_tag("/search", method: "get") do %>
+    <%= text_field_tag(:q, nil, class: "form_control", placeholder: "Search people") %>
+    <%= submit_tag("Search", class: "btn btn-default") %>
+  <% end %>
+</div>

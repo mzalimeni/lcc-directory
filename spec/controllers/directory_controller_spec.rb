@@ -9,13 +9,6 @@ describe DirectoryController do
     end
   end
 
-  describe "GET 'login'" do
-    it "returns http success" do
-      get 'login'
-      response.should be_success
-    end
-  end
-
   describe "GET 'search'" do
     it "returns http success" do
       get 'search'

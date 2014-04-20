@@ -3,7 +3,6 @@ LccDirectory::Application.routes.draw do
 
   root 'directory#home'
 
-  match '/login',   to: 'directory#login',	    via: 'get'
   match '/all',     to: 'users#all',            via: 'get'
   match '/search',  to: 'users#search', 	      via: 'get'
   

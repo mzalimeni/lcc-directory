@@ -72,6 +72,17 @@ class User < ActiveRecord::Base
     end
   end
 
+  def self.to_csv
+    #create the columns array to export, removing secure and ActiveRecord fields and putting 'admin' at the end
+    @column_names = (column_names - %w(password_digest remember_token created_at updated_at) - %w(admin) + %w(admin))
+    CSV.generate do |csv|
+      csv << @column_names
+      all.each do |user|
+        csv << user.attributes.values_at(*@column_names)
+      end
+    end
+  end
+
   private
 
     def create_remember_token

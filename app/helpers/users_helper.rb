@@ -1,5 +1,6 @@
 module UsersHelper
 
+  #unused - meant for AJAX name completion with widget add-on
   def update_user_names_hashmap
     if @_users_updated || @_user_names_cache.nil?
       @_user_names_cache = []

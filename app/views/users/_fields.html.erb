@@ -19,7 +19,7 @@
 <%= f.text_field :city %>
 
 <%= f.label :state %>
-<%= f.text_field :state %>
+<%= f.text_field :state, maxlength: 2 %>
 
 <%= f.label :postal_code %>
 <%= f.text_field :postal_code %>
@@ -34,9 +34,9 @@
 <%= f.text_field :work_phone %>
 
 <%= f.label :primary_phone %>
-<%= f.radio_button :primary_phone, "Mobile", value: 0 %>
-<%= f.radio_button :primary_phone, "Home", value: 1 %>
-<%= f.radio_button :primary_phone, "Work", value: 2 %>
+<%= f.radio_button :primary_phone, "Mobile", value: 0 %>Mobile
+<%= f.radio_button :primary_phone, "Home", value: 1 %>Home
+<%= f.radio_button :primary_phone, "Work", value: 2 %>Work
 
 <%= f.label :birthday %>
 <%= f.date_field :birthday %>

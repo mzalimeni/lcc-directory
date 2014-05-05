@@ -141,6 +141,13 @@ input, textarea, select, .uneditable-input {
   @extend .has-error;
 }
 
+/* profile */
+
+.lcc-profile {
+  font-size: 1.3em;
+  max-width: 600px;
+}
+
 /* miscellaneous */
 
 .alert {

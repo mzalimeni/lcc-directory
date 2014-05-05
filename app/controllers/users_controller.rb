@@ -33,6 +33,7 @@ class UsersController < RestrictedController
 
     find_users_matching @q
     if @users.size == 1
+      flash[:success] = 'Only one user matched your search!'
       redirect_to @users[0]
     else
       # we've got zero or more than one match, so the shortcut failed - go ahead with full 'like' search

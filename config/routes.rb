@@ -1,11 +1,17 @@
 LccDirectory::Application.routes.draw do
-  
+
 
   root 'directory#home'
 
+  match '/admin',     to: 'admin#home',           via: 'get'
+  match '/download',  to: 'admin#download',       via: 'get'
+  match '/upload',    to: 'admin#upload',         via: 'get'
+  get 'admin/home'
+  get 'admin/download'
+  get 'admin/upload'
+
   match '/all',       to: 'users#all',            via: 'get'
   match '/search',    to: 'users#search', 	      via: 'get'
-  match '/directory', to: 'directory#index',      via: 'get'
   
   resources :users
 

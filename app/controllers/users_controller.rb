@@ -48,7 +48,7 @@ class UsersController < RestrictedController
   end
 
   def edit
-    # @user defined by before filters in RestrictedController
+    # @user already defined by before filters in RestrictedController
   end
 
   def update

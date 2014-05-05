@@ -7,7 +7,14 @@
       <% if signed_in? %>
           <% unless @user.blank? %>
               <% if current_user? || admin_user? %>
-          <li><%= link_to "Edit", edit_user_path(@user) %></li>
+                  <li><%= link_to "Edit", edit_user_path(@user) %></li>
+              <% end %>
+          <% end %>
+          <% if admin_user? %>
+              <% if controller.controller_name == 'admin' %>
+                  <li><%= link_to "Exit Administration", root_path %></li>
+              <% else %>
+                  <li><%= link_to "Administration", admin_path %></li>
               <% end %>
           <% end %>
           <li class="dropdown">

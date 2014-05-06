@@ -33,27 +33,30 @@
 <%= f.label :work_phone %>
 <%= f.text_field :work_phone %>
 
-<%= f.label :primary_phone %>
-<%= f.radio_button :primary_phone, "Mobile", value: 0 %>Mobile
-<%= f.radio_button :primary_phone, "Home", value: 1 %>Home
-<%= f.radio_button :primary_phone, "Work", value: 2 %>Work
-
+<%= f.label :primary_phone, class: 'input-inline' %><br>
+<%= f.radio_button :primary_phone, 0 %>
+<%= f.label :primary_phone_mobile, 'Mobile',  class: 'input-inline' %><br>
+<%= f.radio_button :primary_phone, 1 %>
+<%= f.label :primary_phone_home, 'Home',  class: 'input-inline' %><br>
+<%= f.radio_button :primary_phone, 2 %>
+<%= f.label :primary_phone_work, 'Work',  class: 'input-inline' %><br>
+<br>
 <%= f.label :birthday %>
 <%= f.date_field :birthday %>
 
-<%= f.label :directory_public, "Make profile public" %>
 <%= f.check_box :directory_public %>
-
+<%= f.label :directory_public, 'Make profile public' %>
+<div><br></div>
 <%= f.label :password %>
 <%= f.password_field :password %>
 
-<%= f.label :password_confirmation, "Confirm Password" %>
+<%= f.label :password_confirmation, 'Confirm Password' %>
 <%= f.password_field :password_confirmation %>
 
 <% if current_user.admin? %>
-    <%= f.label :admin %>
     <%= f.check_box :admin %>
-
+    <%= f.label :admin, class: 'input-inline' %>
+    <div><br></div>
     <%= f.label :family_id %>
     <%= number_field :family_id, in: 1..9999 %>
 

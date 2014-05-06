@@ -7,7 +7,11 @@
       <% if signed_in? %>
           <% unless @user.blank? %>
               <% if current_user? || admin_user? %>
-                  <li><%= link_to "Edit", edit_user_path(@user) %></li>
+                  <% unless current_page?(edit_user_path) %>
+                      <li><%= link_to "Edit", edit_user_path(@user) %></li>
+                  <% else %>
+                      <li><%= link_to "Cancel Edit", user_path(@user) %></li>
+                  <% end %>
               <% end %>
           <% end %>
           <% if admin_user? %>

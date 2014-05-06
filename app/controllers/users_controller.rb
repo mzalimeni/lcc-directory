@@ -30,6 +30,10 @@ class UsersController < RestrictedController
   end
 
   def search
+    if params[:query].blank?
+      redirect_to all_path and return
+    end
+
     query = params[:query].gsub(/[^a-zA-Z ]/i, '').gsub(/ +/, ' ') # normalize input to single space alpha
 
     find_users_matching query

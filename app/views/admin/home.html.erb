@@ -1,6 +1,7 @@
 <h1>Welcome, <%= current_user.first_name %>!</h1>
 <div class="h4">
-    <div><%= link_to "Download directory", download_path %></div><br>
-    <div><%= link_to "Upload directory", upload_path %></div><br>
-    <div title="Coming soon!" style="color: #999999">Edit families</div><br>
+  <div><%= link_to "Create new user", new_user_path %></div><br>
+  <div><%= link_to "Download directory", download_path %></div><br>
+  <div><%= link_to "Upload directory", upload_path %></div><br>
+  <div title="Coming soon!" style="color: #999999">Edit families</div><br>
 </div>

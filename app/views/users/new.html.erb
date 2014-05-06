@@ -1,11 +1,9 @@
 <% provide(:title, 'Create new user') %>
 <h1>Create new user</h1>
 
-<div class="row">
-  <div class="span6 offset3">
+<div class="form-group edit-form">
     <%= form_for(@user) do |f| %>
       <%= render 'fields', f: f %>
       <%= f.submit "Create user", class: "btn btn-large btn-primary" %>
     <% end %>
-  </div>
 </div>

@@ -5,6 +5,10 @@ class UsersController < RestrictedController
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user,     only: [:create, :destroy]
 
+  def new
+    @user = User.new
+  end
+
   def create
     @user = User.new(user_params)
     if @user.save
@@ -69,7 +73,7 @@ class UsersController < RestrictedController
   def destroy
     User.find(params[:id]).destroy
     flash[:success] = 'User deleted'
-    redirect_back_or root_path
+    redirect_to root_path
   end
 
   private

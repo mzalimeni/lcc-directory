@@ -19,10 +19,10 @@ class AdminController < RestrictedController
     if params[:replace]
       #User.delete_all
       import_users(params[:file])
-      flash[:success] = 'Database successfully replaced'
+      flash.now[:success] = 'Database successfully replaced'
     else
       import_users(params[:file])
-      flash[:success] = 'Import successful!'
+      flash.now[:success] = 'Import successful!'
     end
     render 'upload'
   end

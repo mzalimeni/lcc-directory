@@ -9,6 +9,7 @@ LccDirectory::Application.routes.draw do
   get 'admin/home'
   get 'admin/download'
   get 'admin/upload'
+  post 'admin/import'
 
   match '/all',       to: 'users#all',            via: 'get'
   match '/search',    to: 'users#search', 	      via: 'get'

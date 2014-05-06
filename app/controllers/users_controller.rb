@@ -25,24 +25,25 @@ class UsersController < RestrictedController
   end
 
   def all
-    @users = User.paginate(page: params[:page])
+    @users = User.all
+    prepare_to_return
   end
 
   def search
-    @q = params[:q].gsub(/[^a-zA-Z ]/i, '').gsub(/ +/, ' ') # normalize input to single space alpha
+    query = params[:query].gsub(/[^a-zA-Z ]/i, '').gsub(/ +/, ' ') # normalize input to single space alpha
 
-    find_users_matching @q
+    find_users_matching query
     if @users.size == 1
       flash[:success] = 'Only one user matched your search!'
       redirect_to @users[0]
     else
       # we've got zero or more than one match, so the shortcut failed - go ahead with full 'like' search
-      find_users_like @q
+      find_users_like query
       if @users.blank?
         flash[:warning] = 'Sorry, no members matched your search'
         redirect_to root_path
       else
-        prepare_to_return @users
+        prepare_to_return
       end
     end
   end
@@ -64,7 +65,7 @@ class UsersController < RestrictedController
   def destroy
     User.find(params[:id]).destroy
     flash[:success] = 'User deleted'
-    redirect_to admin_url
+    redirect_back_or root_path
   end
 
   private
@@ -85,7 +86,7 @@ class UsersController < RestrictedController
       end
     end
 
-    def prepare_to_return(users)
+    def prepare_to_return
       @users = @users.sort_by! {|user| user.first_name}
       @users = @users.paginate(page: params[:page])
     end

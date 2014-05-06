@@ -11,11 +11,11 @@ module UsersHelper
     end
   end
 
-  def find_users_matching(q)
+  def find_users_matching(query)
     @users = []
-    tokens = q.split
+    tokens = query.split
     if tokens.size == 1
-      find_users_like(q)
+      find_users_like(query)
     else
       count = 1
       while count < tokens.size
@@ -25,9 +25,9 @@ module UsersHelper
     end
   end
 
-  def find_users_like(q)
+  def find_users_like(query)
     @users = []
-    q.split.each do |s|
+    query.split.each do |s|
       @users += User.where("LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?", "%#{s.downcase}%", "%#{s.downcase}%")
     end
     @users.uniq!

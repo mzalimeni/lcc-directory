@@ -58,8 +58,8 @@
     <%= f.label :admin, class: 'input-inline' %>
     <div><br></div>
     <%= f.label :family_id %>
-    <%= number_field :family_id, in: 1..9999 %>
+    <%= f.select :family_id, User.where('id = family_id AND id != ?', @user ? -1 : @user.id).collect {|m| [ m.full_name, m.id ] }, {include_blank: 'None'} %>
 
     <%= f.label :spouse_id %>
-    <%= number_field :spouse_id, in: 1..9999 %>
+    <%= f.select :spouse_id, User.where('id != ?', @user ? -1 : @user.id).collect {|m| [ m.full_name, m.id ] }, {include_blank: 'None'} %>
 <% end %>

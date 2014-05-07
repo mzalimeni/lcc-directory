@@ -10,6 +10,13 @@ class User < ActiveRecord::Base
   before_save { self.preferred_name = titleize_with_accents preferred_name }
   before_save { self.city = titleize_with_accents city }
   before_save { self.email = email.downcase }
+  before_save { self.family_id = self.id if self.family_id.blank? }
+  after_create {
+    if self.family_id.blank?
+      self.family_id = self.id
+      self.save
+    end
+  }
 
   #Validations
   VALID_NAME_REGEX = /\A[a-zA-Z]+(['\- ][a-zA-Z]+)*\z/i

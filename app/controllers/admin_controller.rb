@@ -17,7 +17,7 @@ class AdminController < RestrictedController
 
   def import
     if params[:file]
-      user_ids = User.import(params[:file], params[:replace])
+      user_ids = User.import(params[:file], current_user.id, params[:replace])
       flash.now[:success] = params[:replace] ?
           'Database successfully replaced' : 'Successfully imported ' + user_ids.size.to_s + ' users'
     else

@@ -130,18 +130,21 @@ class User < ActiveRecord::Base
       end
     end
 
-    def self.import(file, replace=false)
-      User.delete_all if replace
+    def self.import(file, current_user_id, replace=false)
+      User.where.not(id: current_user_id).destroy_all if replace
 
       user_ids = []
       CSV.foreach(file.path, headers: true) do |row|
         row_hash = row.to_hash
-        temp_pass = row_hash['last_name']
-        row_hash['password'] = temp_pass
-        row_hash['password_confirmation'] = temp_pass
 
-        user = User.new(row_hash)
-        user_ids.push user.id if user.save
+        unless row_hash['id'] == current_user_id
+          temp_pass = row_hash['last_name']
+          row_hash['password'] = temp_pass
+          row_hash['password_confirmation'] = temp_pass
+
+          user = User.new(row_hash)
+          user_ids.push user.id if user.save
+        end
       end
       user_ids
     end

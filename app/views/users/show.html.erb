@@ -22,6 +22,12 @@
       <tr>
         <td>Birthday</td><td><%= @user.birthday.to_formatted_s :long %></td>
       </tr>
+      <% unless @user.spouse.blank? %>
+          <tr>
+            <td>Spouse</td>
+            <td><%= link_to @user.spouse.full_name, @user.spouse %></td>
+          </tr>
+      <% end %>
       <% unless @family.blank? %>
           <tr>
             <td>Family</td>

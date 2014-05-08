@@ -58,8 +58,11 @@
     <%= f.label :admin, class: 'input-inline' %>
     <div><br></div>
     <%= f.label :family_id %>
-    <%= f.select :family_id, User.where('id = family_id AND id != ?', @user ? -1 : @user.id).collect {|m| [ m.full_name, m.id ] }, {include_blank: 'None'} %>
+    <%= f.select :family_id, User.where('id = family_id AND id != ?', @user ? @user.id : -1).sort_by{|user| user.first_name}.collect {|m| [ m.full_name, m.id ] },
+                 include_blank: 'None', disabled: @user ? false : !@user.family.blank? && @user.id == @user.family_id %>
 
     <%= f.label :spouse_id %>
-    <%= f.select :spouse_id, User.where('id != ?', @user ? -1 : @user.id).collect {|m| [ m.full_name, m.id ] }, {include_blank: 'None'} %>
+    <%= f.select :spouse_id, User.where('id != ?', @user ? @user.id : -1).sort_by{|user| user.first_name}.collect {|m| [ m.full_name, m.id ] },
+                 include_blank: 'None', disabled: @user ? !User.find_by_spouse_id(@user.id).blank? : false,
+                 selected: (@user && !User.find_by_spouse_id(@user.id).blank?) ? User.find_by_spouse_id(@user.id) : '' %>
 <% end %>

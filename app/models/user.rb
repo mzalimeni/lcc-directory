@@ -10,7 +10,15 @@ class User < ActiveRecord::Base
   before_save { self.preferred_name = titleize_with_accents preferred_name }
   before_save { self.city = titleize_with_accents city }
   before_save { self.email = email.downcase }
-  before_save { self.family_id = self.id if self.family_id.blank? }
+  before_save { self.family_id = id if family_id.blank? }
+  before_save {
+    @previous_spouse = spouse_id_was.blank? ? nil : User.find(spouse_id_was) if spouse_id_changed?
+    @new_spouse = spouse if spouse_id_changed?
+  }
+  after_save {
+    @previous_spouse.update(spouse_id: nil) if @previous_spouse && !@previous_spouse.spouse_id.blank?
+    @new_spouse.update(spouse_id: id) if @new_spouse && @new_spouse.spouse_id != id
+  }
   after_create {
     if self.family_id.blank?
       self.family_id = self.id
@@ -77,6 +85,10 @@ class User < ActiveRecord::Base
     else
       preferred_name + ' ' + last_name
     end
+  end
+
+  def spouse
+    spouse_id.blank? ? nil : User.find(spouse_id)
   end
 
   def self.to_csv

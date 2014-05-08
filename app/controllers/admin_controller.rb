@@ -16,30 +16,16 @@ class AdminController < RestrictedController
   end
 
   def import
-    if params[:replace]
-      #User.delete_all
-      import_users(params[:file])
-      flash.now[:success] = 'Database successfully replaced'
+    if params[:file]
+      user_ids = User.import(params[:file], params[:replace])
+      flash.now[:success] = params[:replace] ?
+          'Database successfully replaced' : 'Successfully imported ' + user_ids.size + ' users'
     else
-      import_users(params[:file])
-      flash.now[:success] = 'Import successful!'
+      flash.now[:danger] = 'Upload failure: no file selected'
     end
+
+    @users = User.find(user_ids) unless params[:replace] || user_ids.size > 20
     render 'upload'
-  end
-
-  def import_users(file)
-    user_ids = []
-    CSV.foreach(file.path, headers: true) do |row|
-      row_hash = row.to_hash
-      temp_pass = row.to_hash['last_name']
-      row_hash['password'] = temp_pass
-      row_hash['password_confirmation'] = temp_pass
-      row_hash.delete 'id'
-
-      user = User.new(row_hash)
-      user_ids += user.id if user.save
-    end
-    @users = User.find(user_ids)
   end
 
 end

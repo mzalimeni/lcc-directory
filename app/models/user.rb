@@ -109,17 +109,6 @@ class User < ActiveRecord::Base
     is_family_owner? || spouse.try(:is_family_owner?)
   end
 
-  def self.to_csv
-    #create the columns array to export, removing secure and ActiveRecord fields and putting 'admin' at the end
-    @column_names = (column_names - %w(password_digest remember_token created_at updated_at) - %w(admin) + %w(admin))
-    CSV.generate do |csv|
-      csv << @column_names
-      all.each do |user|
-        csv << user.attributes.values_at(*@column_names)
-      end
-    end
-  end
-
   private
 
     def create_remember_token
@@ -128,6 +117,33 @@ class User < ActiveRecord::Base
 
     def changing_password?
       password.present? || password_confirmation.present?
+    end
+
+    def self.to_csv
+      #create the columns array to export, removing secure and ActiveRecord fields and putting 'admin' at the end
+      @column_names = (column_names - %w(password_digest remember_token created_at updated_at) - %w(admin) + %w(admin))
+      CSV.generate do |csv|
+        csv << @column_names
+        all.each do |user|
+          csv << user.attributes.values_at(*@column_names)
+        end
+      end
+    end
+
+    def self.import(file, replace=false)
+      User.delete_all if replace
+
+      user_ids = []
+      CSV.foreach(file.path, headers: true) do |row|
+        row_hash = row.to_hash
+        temp_pass = row_hash['last_name']
+        row_hash['password'] = temp_pass
+        row_hash['password_confirmation'] = temp_pass
+
+        user = User.new(row_hash)
+        user_ids.push user.id if user.save
+      end
+      user_ids
     end
 
 end

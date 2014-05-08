@@ -91,6 +91,24 @@ class User < ActiveRecord::Base
     spouse_id.blank? ? nil : User.find(spouse_id)
   end
 
+  def family
+    # user's kids + spouse's kids
+    User.where('family_id = ? AND id != ?', family_id, id) +
+    User.where('family_id = ? AND id != ?', spouse_id, spouse_id)
+  end
+
+  def everyone_else
+    User.where.not(id: id)
+  end
+
+  def is_family_owner?
+    !family.blank? && family_id == id
+  end
+
+  def is_head_of_household?
+    is_family_owner? || spouse.try(:is_family_owner?)
+  end
+
   def self.to_csv
     #create the columns array to export, removing secure and ActiveRecord fields and putting 'admin' at the end
     @column_names = (column_names - %w(password_digest remember_token created_at updated_at) - %w(admin) + %w(admin))

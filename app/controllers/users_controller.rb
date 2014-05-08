@@ -1,9 +1,10 @@
 class UsersController < RestrictedController
   include UsersHelper
 
-  before_action :signed_in_user, only: [:edit, :update, :create, :destroy]
-  before_action :correct_user,   only: [:edit, :update]
-  before_action :admin_user,     only: [:create, :destroy]
+  before_action :signed_in_user,  only: [:edit, :update, :create, :destroy]
+  before_action :correct_user,    only: [:edit, :update]
+  before_action :admin_user,      only: [:create, :destroy]
+  before_action :prepare_options, only: [:new, :edit]
 
   def new
     @user = User.new
@@ -26,7 +27,7 @@ class UsersController < RestrictedController
         # if member is public or user is signed in, allow view - otherwise this forces sign-in, so we're good
       end
     end
-    @family = User.where('family_id = ? AND id != ?', @user.family_id, @user.id)
+    @family = @user.family
   end
 
   def all
@@ -98,6 +99,14 @@ class UsersController < RestrictedController
     def prepare_to_return
       @users = @users.sort_by! {|user| user.first_name}
       @users = @users.paginate(page: params[:page])
+    end
+
+    #Before filters
+
+    def prepare_options
+      @family_options = User.where('id = family_id AND id != ?', @user ? @user.id : '')
+      #for for married user, just their spouse; for new user or unmarried, anyone unmarried
+      @spouse_options = @user && @user.spouse.blank? ? @user.everyone_else : User.where(spouse_id: @user.try(:id))
     end
 
 end

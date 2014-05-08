@@ -133,6 +133,10 @@ input, textarea, select, .uneditable-input {
   @include box_sizing;
 }
 
+select:not([disabled]) {
+  background-color: white;
+}
+
 input[type=checkbox], input[type=radio] {
   width: auto;
   margin-right: 10px;

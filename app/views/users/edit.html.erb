@@ -4,6 +4,7 @@
 <div class="form-group, edit-form">
     <%= form_for(@user) do |f| %>
       <%= render 'fields', f: f %>
+      <div><br></div>
       <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
     <% end %>
 </div>

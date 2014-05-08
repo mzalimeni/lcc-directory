@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   before_save { self.email = email.downcase }
   before_save { self.family_id = id if family_id.blank? }
   before_save {
-    @previous_spouse = spouse_id_was.blank? ? nil : User.find(spouse_id_was) if spouse_id_changed?
+    @previous_spouse = spouse_id_was.blank? ? nil : User.find_by_id(spouse_id_was) if spouse_id_changed?
     @new_spouse = spouse if spouse_id_changed?
   }
   after_save {
@@ -88,7 +88,7 @@ class User < ActiveRecord::Base
   end
 
   def spouse
-    spouse_id.blank? ? nil : User.find(spouse_id)
+    spouse_id.blank? ? nil : User.find_by_id(spouse_id)
   end
 
   def family

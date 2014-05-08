@@ -19,7 +19,7 @@ class AdminController < RestrictedController
     if params[:file]
       user_ids = User.import(params[:file], params[:replace])
       flash.now[:success] = params[:replace] ?
-          'Database successfully replaced' : 'Successfully imported ' + user_ids.size + ' users'
+          'Database successfully replaced' : 'Successfully imported ' + user_ids.size.to_s + ' users'
     else
       flash.now[:danger] = 'Upload failure: no file selected'
     end

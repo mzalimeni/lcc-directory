@@ -133,6 +133,11 @@ input, textarea, select, .uneditable-input {
   @include box_sizing;
 }
 
+.search-form #query {
+  border-radius: 3px;
+  padding-left: 6px;
+}
+
 select:not([disabled]) {
   background-color: white;
 }
@@ -240,4 +245,17 @@ aside {
   }
 }
 
+/* user show */
 
+.family {
+  list-style: none;
+  margin: 0;
+  li {
+    overflow: auto;
+    border-top: none;
+  }
+}
+
+.table tr:first-child td {
+  border-top: none;
+}

@@ -19,9 +19,11 @@
             <%= @user.city + ', ' + @user.state + ' ' + @user.postal_code.to_s %>
         </td>
       </tr>
-      <tr>
-        <td>Birthday</td><td><%= @user.birthday.to_formatted_s :long %></td>
-      </tr>
+      <% unless @user.birthday.blank? %>
+          <tr>
+            <td>Birthday</td><td><%= @user.birthday.to_formatted_s :long %></td>
+          </tr>
+      <% end %>
       <% unless @user.spouse.blank? %>
           <tr>
             <td>Spouse</td>
@@ -32,7 +34,7 @@
           <tr>
             <td>Family</td>
             <td>
-              <ul class="users">
+              <ul class="family">
                 <% @family.each do |member| %>
                     <li>
                       <%= link_to member.full_name, member %>

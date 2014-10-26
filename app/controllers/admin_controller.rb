@@ -19,9 +19,9 @@ class AdminController < RestrictedController
     if params[:file]
       result = User.import(params[:file], current_user, params[:replace])
 
-      if result[:user_ids].length > 0
-        flash.now[:success] = (params[:replace] ? 'Database successfully replaced with ' : 'Successfully imported ') +
-            result[:user_ids].size.to_s + ' users'
+      if (result[:created_ids].length + result[:updated_ids].length) > 0
+        flash.now[:success] = 'Successfully created ' + result[:created_ids].length.to_s +
+            (result[:updated_ids].length > 0 ? ' and updated ' + result[:updated_ids].length.to_s : '') + ' users'
       end
 
       if result[:errors].length > 0
@@ -52,7 +52,8 @@ class AdminController < RestrictedController
       flash.now[:warning] = 'Upload failure: no file selected'
     end
 
-    @users = User.find(user_ids) unless params[:replace] || user_ids.size > 20
+    user_ids = result[:created_ids] + result[:updated_ids];
+    @users = User.find(user_ids) unless user_ids.size > 20
     render 'upload'
   end
 

@@ -126,33 +126,57 @@ class User < ActiveRecord::Base
     end
 
     def self.import(file, current_user, replace=false)
+      #if replacing entire database, delete all users not matching the current user
       User.where.not(id: current_user.id).where.not(email: current_user.email).delete_all if replace
 
-      user_ids = []
+      created_ids = []
+      updated_ids = []
       errors = {}
       CSV.foreach(file.path, headers: true) do |row|
         row_hash = row.to_hash
 
+        #update date formats to correct the CSV export format
+        date = DateTime.strptime(row_hash['birthday'], '%m/%d/%y')
+        if date
+          birthday_formatted = date.strftime('%Y-%m-%d').to_s
+        end
+        row_hash['birthday'] = birthday_formatted
+
+        #don't allow the current user to get messed with
         if row_hash['id'] == current_user.id || row_hash['email'].strip == current_user.email
           errors[:matching_current_user] = [current_user.email]
         else
-          temp_pass = row_hash['last_name'] + row_hash['first_name']
-          row_hash['password'] = temp_pass
-          row_hash['password_confirmation'] = temp_pass
+          user = User.find_by_email(row_hash['email'])
+          if user
+            #found an existing user, so update attributes
+            user.update(row_hash)
 
-          user = User.create(row_hash)
-
-          if user.errors.blank?
-            user_ids.push user.id
-          else
-            user.errors.each do |error|
-              errors[error] ||= []
-              errors[error].push user.email
+            if user.errors.blank?
+              updated_ids.push user.id
             end
+          else
+            #import the new user
+            temp_pass = row_hash['last_name'] + row_hash['first_name']
+            row_hash['password'] = temp_pass
+            row_hash['password_confirmation'] = temp_pass
+
+            user = User.create(row_hash)
+
+            if user.errors.blank?
+              created_ids.push user.id
+            end
+          end
+
+          #handle errors
+          user.errors.each do |error|
+            errors[error] ||= []
+            errors[error].push user.email
           end
         end
       end
-      {user_ids: user_ids, errors: errors} #return a hash of the saved user ids, and the errors for the failures
+
+      #return a hash of the saved and updated user ids, and the errors for the failures
+      {created_ids: created_ids, updated_ids: updated_ids, errors: errors}
     end
 
 end

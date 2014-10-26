@@ -10,4 +10,5 @@ module ModelsHelper
       retval.strip!
     end
   end
+
 end

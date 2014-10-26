@@ -29,27 +29,22 @@ class User < ActiveRecord::Base
   #Validations
   VALID_NAME_REGEX = /\A[a-zA-Z]+(['\- ][a-zA-Z]+)*\z/i
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
-  VALID_STREET_REGEX = /\A[1-9]+[0-9]{0,8}[a-zA-Z]? [a-zA-Z]+(['\- ][a-zA-Z]+)*( [a-zA-Z]{1,10}\.?)*\z/i
+  VALID_STREET_REGEX = /\A[1-9]+[0-9]{0,8}[a-zA-Z]? [a-zA-Z]+(['\- ][a-zA-Z]+)*( [a-zA-Z0-9]{1,10}\.?)*\z/i
   VALID_CITY_REGEX = /\A[a-zA-Z]+(\. )?(['\- ]?[a-zA-Z]+)*\z/i
 
   validates :first_name, presence: true,
             length: {maximum: 20},
-            format: {with: VALID_NAME_REGEX,
-                        message: "%{value} is not a valid name"}
+            format: {with: VALID_NAME_REGEX, message: "%{value} is not a valid name"}
   validates :last_name, presence: true,
             length: {maximum: 20},
-            format: {with: VALID_NAME_REGEX,
-                        message: "%{value} is not a valid name"}
+            format: {with: VALID_NAME_REGEX, message: "%{value} is not a valid name"}
   validates :preferred_name, length: {maximum: 20},
-            format: {with: VALID_NAME_REGEX,
-                        message: "%{value} is not a valid name"},
+            format: {with: VALID_NAME_REGEX, message: "%{value} is not a valid name"},
             allow_blank: true
-  validates :street_address, format: {with: VALID_STREET_REGEX,
-                        message: "%{value} is not a valid street address"},
+  validates :street_address, format: {with: VALID_STREET_REGEX, message: "%{value} is not a valid street address"},
             allow_blank: true
   validates :city, length: {maximum: 30},
-            format: {with: VALID_CITY_REGEX,
-                        message: "%{value} is not a valid city"},
+            format: {with: VALID_CITY_REGEX, message: "%{value} is not a valid city"},
             allow_blank: true
   validates :state, length: {is: 2},
             inclusion: {in: %w(AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY),
@@ -58,8 +53,7 @@ class User < ActiveRecord::Base
   validates :postal_code, length: {is: 5},
             allow_blank: true
   validates :email, presence: true,
-            format: {with: VALID_EMAIL_REGEX,
-                        message: "%{value} is not a valid email"},
+            format: {with: VALID_EMAIL_REGEX, message: "%{value} is not a valid email"},
             uniqueness: {case_sensitive: false}
   validates :mobile_phone, length: {is: 10},
             allow_blank: true
@@ -68,7 +62,8 @@ class User < ActiveRecord::Base
   validates :work_phone, length: {is: 10},
             allow_blank: true
   validates :primary_phone, numericality: {in: 0..2}
-  validates :password, length: {minimum: 6, if: :changing_password?},
+  validates :password, length: {minimum: 6, if: :changing_password?,
+                                message: 'Password must be at least 6 characters'},
             confirmation: {if: :changing_password?}
 
   def User.new_remember_token
@@ -130,23 +125,34 @@ class User < ActiveRecord::Base
       end
     end
 
-    def self.import(file, current_user_id, replace=false)
-      User.where.not(id: current_user_id).destroy_all if replace
+    def self.import(file, current_user, replace=false)
+      User.where.not(id: current_user.id).where.not(email: current_user.email).delete_all if replace
 
       user_ids = []
+      errors = {}
       CSV.foreach(file.path, headers: true) do |row|
         row_hash = row.to_hash
 
-        unless row_hash['id'] == current_user_id
-          temp_pass = row_hash['last_name']
+        if row_hash['id'] == current_user.id || row_hash['email'].strip == current_user.email
+          errors[:matching_current_user] = [current_user.email]
+        else
+          temp_pass = row_hash['last_name'] + row_hash['first_name']
           row_hash['password'] = temp_pass
           row_hash['password_confirmation'] = temp_pass
 
-          user = User.new(row_hash)
-          user_ids.push user.id if user.save
+          user = User.create(row_hash)
+
+          if user.errors.blank?
+            user_ids.push user.id
+          else
+            user.errors.each do |error|
+              errors[error] ||= []
+              errors[error].push user.email
+            end
+          end
         end
       end
-      user_ids
+      {user_ids: user_ids, errors: errors} #return a hash of the saved user ids, and the errors for the failures
     end
 
 end

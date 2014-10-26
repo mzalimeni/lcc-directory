@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-   BASE_TITLE="LCC Online Directory"
+   BASE_TITLE='LCC Online Directory'
 
    #Returns the full title on a per-page basis
    def full_title(page_title)

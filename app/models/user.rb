@@ -88,8 +88,9 @@ class User < ActiveRecord::Base
 
   def family
     # user's kids + spouse's kids
-    User.where('family_id = ? AND id != ?', family_id, id) +
-    User.where('family_id = ? AND id != ?', spouse_id, spouse_id)
+    users = User.where('family_id = ? AND id != ?', family_id, id)
+    users += User.where('family_id = ? AND id != ?', spouse_id, spouse_id) unless spouse_id.blank?
+    return users
   end
 
   def everyone_else

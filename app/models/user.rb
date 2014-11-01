@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
             inclusion: {in: %w(AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY),
                         message: "%{value} is not a valid state"},
             allow_blank: true
-  validates :postal_code, length: {is: 5},
+  validates :postal_code, length: {is: 5}, numericality: {in: 11111..99999},
             allow_blank: true
   validates :email, presence: true,
             format: {with: VALID_EMAIL_REGEX, message: "%{value} is not a valid email"},

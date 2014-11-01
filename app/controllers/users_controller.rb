@@ -104,8 +104,10 @@ class UsersController < RestrictedController
     #Before filters
 
     def prepare_options
-      @family_options = User.where('id = family_id AND id != ?', @user ? @user.id : '')
-      #for for married user, just their spouse; for new user or unmarried, anyone unmarried
+      # everyone besides the user whose id is set to their own (they don't belong to a family)
+      @family_options = @user ? User.where('id = family_id').where.not(id: @user.id) : User.where('id = family_id')
+
+      # for married user, just their spouse; for new user or unmarried, anyone unmarried
       @spouse_options = @user && @user.spouse.blank? ? @user.everyone_else : User.where(spouse_id: @user.try(:id))
     end
 

@@ -114,13 +114,13 @@
     <div><br></div>
     <%= f.label :family_id, 'Member of Family' %>
     <%= f.select :family_id,
-        @family_options.sort_by{|user| user.first_name}.collect {|m| [ m.full_name, m.id ] },
+        family_options.sort_by{|user| user.first_name}.collect {|m| [ m.full_name, m.id ] },
         {include_blank: 'None'},
         disabled: @user.try(:is_head_of_household?),
         title: @user.try(:is_head_of_household?) ? 'This user is head of a family' : '' %>
 
     <%= f.label :spouse_id %>
     <%= f.select :spouse_id,
-        @spouse_options.sort_by{|user| user.first_name}.collect {|m| [ m.full_name, m.id ] },
+        spouse_options.sort_by{|user| user.first_name}.collect {|m| [ m.full_name, m.id ] },
         {include_blank: 'None'} %>
 <% end %>

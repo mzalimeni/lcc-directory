@@ -4,7 +4,9 @@ class UsersController < RestrictedController
   before_action :signed_in_user,  only: [:edit, :update, :create, :destroy]
   before_action :correct_user,    only: [:edit, :update]
   before_action :admin_user,      only: [:create, :destroy]
-  before_action :prepare_options, only: [:new, :edit]
+
+  helper_method :family_options
+  helper_method :spouse_options
 
   def new
     @user = User.new
@@ -23,7 +25,7 @@ class UsersController < RestrictedController
   def show
     @user = User.find(params[:id])
     unless @user.directory_public
-      if signed_in_user('Please sign in to view ' + @user.full_name + "'s profile")
+      if signed_in_user('Please sign in to view ' + @user.full_name + '\'s profile')
         # if member is public or user is signed in, allow view - otherwise this forces sign-in, so we're good
       end
     end
@@ -101,14 +103,14 @@ class UsersController < RestrictedController
       @users = @users.paginate(page: params[:page])
     end
 
-    #Before filters
-
-    def prepare_options
+    def family_options
       # everyone besides the user whose id is set to their own (they don't belong to a family)
-      @family_options = @user ? User.where('id = family_id').where.not(id: @user.id) : User.where('id = family_id')
+      @user ? User.where('id = family_id').where.not(id: @user.id) : User.where('id = family_id')
+    end
 
+    def spouse_options
       # for married user, just their spouse; for new user or unmarried, anyone unmarried
-      @spouse_options = @user && @user.spouse.blank? ? @user.everyone_else : User.where(spouse_id: @user.try(:id))
+      @user && @user.spouse.blank? ? @user.everyone_else : User.where(spouse_id: @user.try(:id))
     end
 
 end

@@ -4,24 +4,35 @@
   <div class="lcc-profile-info">
     <table class="table">
       <tr>
-        <td>Email</td><td><a href="mailto:<%= @user.email %>"><%= @user.email %></a></td>
+        <td>Email</td>
+        <td><a href="mailto:<%= @user.email %>"><%= @user.email %></a></td>
       </tr>
       <tr>
-        <td>Phone</td><td>
+        <td>Phone</td>
+        <td>
             <abbr title="Mobile">C:</abbr>&nbsp;<%= number_to_phone(@user.mobile_phone, area_code: true) %><%= @user.primary_phone === 0 ? " (primary)" : "" %><br>
             <abbr title="Home">H:</abbr>&nbsp;<%= number_to_phone(@user.home_phone, area_code: true) %><%= @user.primary_phone === 1 ? " (primary)" : "" %><br>
             <abbr title="Work">W:</abbr>&nbsp;<%= number_to_phone(@user.work_phone, area_code: true) %><%= @user.primary_phone === 2 ? " (primary)" : "" %>
         </td>
       </tr>
       <tr>
-        <td>Address</td><td>
-            <%= @user.street_address %><br>
-            <%= @user.city + ', ' + @user.state + ' ' + @user.postal_code.to_s %>
+        <td>Address</td>
+        <td>
+            <% unless @user.birthday.blank? %>
+                <%= @user.street_address %><br>
+            <% end %>
+            <% unless @user.city.blank? || @user.state.blank? %>
+                <%= @user.city + ', ' + @user.state %>
+            <% end %>
+            <% unless @user.postal_code.blank? %>
+                <%= ' ' + @user.postal_code.to_s %>
+            <% end %>
         </td>
       </tr>
       <% unless @user.birthday.blank? %>
           <tr>
-            <td>Birthday</td><td><%= @user.birthday.to_formatted_s :long %></td>
+            <td>Birthday</td>
+            <td><%= @user.birthday.to_formatted_s :long %></td>
           </tr>
       <% end %>
       <% unless @user.spouse.blank? %>

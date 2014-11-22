@@ -19,3 +19,7 @@ doc/
 .idea
 .secret
 .env
+
+# DBs
+lcc_directory_development
+lcc_directory_test

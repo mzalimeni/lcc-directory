@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   }
 
   #Validations
-  VALID_NAME_REGEX = /\A[a-zA-Z]+(['\- ][a-zA-Z]+)*\z/i
+  VALID_NAME_REGEX = /\A([a-z]+['\.\- ]?)+\z/i
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
   VALID_STREET_REGEX = /\A[1-9]+[0-9]{0,8}[a-zA-Z]? [a-zA-Z]+(['\- ][a-zA-Z]+)*( [a-zA-Z0-9]{1,10}\.?)*\z/i
   VALID_CITY_REGEX = /\A[a-zA-Z]+(\. )?(['\- ]?[a-zA-Z]+)*\z/i

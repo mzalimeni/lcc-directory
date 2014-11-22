@@ -1,13 +1,13 @@
 module ModelsHelper
 
   def titleize_with_accents(string)
-    retval = ""
+    str = ''
     unless string.nil?
       string.gsub('-','#').gsub('\'','$').split.each do |s|
-        retval += s.titleize.gsub(' ','').gsub('#','-').gsub('$','\'')
-        retval += ' '
+        str += s.titleize.gsub(' ','').gsub('#','-').gsub('$','\'')
+        str += ' '
       end
-      retval.strip!
+      str.strip!
     end
   end
 

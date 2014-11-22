@@ -61,7 +61,6 @@ class User < ActiveRecord::Base
             allow_blank: true
   validates :work_phone, length: {is: 10},
             allow_blank: true
-  validates :primary_phone, numericality: {in: 0..2}
   validates :password, length: {minimum: 6, if: :changing_password?,
                                 message: 'must be at least 6 characters'},
             confirmation: {if: :changing_password?}

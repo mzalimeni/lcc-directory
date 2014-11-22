@@ -11,7 +11,6 @@ namespace :db do
                  mobile_phone: "3362225555",
                  home_phone: "9194442222",
                  work_phone: "9192227777",
-                 primary_phone: 0,
                  birthday: Time.local(1989, 10, 24),
                  directory_public: true,
                  password: "admin1",
@@ -30,7 +29,6 @@ namespace :db do
       mobile_phone = rand(6141000000..6149999999)
       home_phone = rand(6141000000..6149999999)
       work_phone = rand(6141000000..6149999999)
-      primary_phone = rand(0..2)
       birthday = Time.local(rand(1960..2005),rand(1..12),rand(1..28))
       directory_public = (rand(0..15) === 0)
       password  = "password"
@@ -44,7 +42,6 @@ namespace :db do
                    mobile_phone: mobile_phone,
                    home_phone: home_phone,
                    work_phone: work_phone,
-                   primary_phone: primary_phone,
                    birthday: birthday,
                    directory_public: directory_public,
                    password: password,

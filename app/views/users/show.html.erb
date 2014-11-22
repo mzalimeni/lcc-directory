@@ -10,9 +10,9 @@
       <tr>
         <td>Phone</td>
         <td>
-            <abbr title="Mobile">C:</abbr>&nbsp;<%= number_to_phone(@user.mobile_phone, area_code: true) %><%= @user.primary_phone === 0 ? " (primary)" : "" %><br>
-            <abbr title="Home">H:</abbr>&nbsp;<%= number_to_phone(@user.home_phone, area_code: true) %><%= @user.primary_phone === 1 ? " (primary)" : "" %><br>
-            <abbr title="Work">W:</abbr>&nbsp;<%= number_to_phone(@user.work_phone, area_code: true) %><%= @user.primary_phone === 2 ? " (primary)" : "" %>
+            <abbr title="Mobile">C:</abbr>&nbsp;<%= number_to_phone(@user.mobile_phone, area_code: true) %><br>
+            <abbr title="Home">H:</abbr>&nbsp;<%= number_to_phone(@user.home_phone, area_code: true) %><br>
+            <abbr title="Work">W:</abbr>&nbsp;<%= number_to_phone(@user.work_phone, area_code: true) %>
         </td>
       </tr>
       <% unless (@user.street_address.blank? && @user.city.blank? && @user.state.blank? && @user.postal_code.blank?) %>

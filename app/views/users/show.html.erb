@@ -24,9 +24,9 @@
             <% end %>
             <% unless @user.city.blank? || @user.state.blank? %>
                 <%= @user.city + ', ' + @user.state + ' ' %>
-                <% unless @user.postal_code.blank? %>
-                    <%= + @user.postal_code.to_s %>
-                <% end %>
+            <% end %>
+            <% unless @user.postal_code.blank? %>
+                <%= + @user.postal_code.to_s %>
             <% end %>
         </td>
       </tr>

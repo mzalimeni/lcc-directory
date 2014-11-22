@@ -7,32 +7,34 @@
         <td>Email</td>
         <td><a href="mailto:<%= @user.email %>"><%= @user.email %></a></td>
       </tr>
-      <tr>
-        <td>Phone</td>
-        <td>
-            <abbr title="Mobile">C:</abbr>&nbsp;<%= number_to_phone(@user.mobile_phone, area_code: true) %><br>
-            <abbr title="Home">H:</abbr>&nbsp;<%= number_to_phone(@user.home_phone, area_code: true) %><br>
-            <abbr title="Work">W:</abbr>&nbsp;<%= number_to_phone(@user.work_phone, area_code: true) %>
-        </td>
-      </tr>
-      <% unless (@user.street_address.blank? && @user.city.blank? && @user.state.blank? && @user.postal_code.blank?) %>
-      <tr>
-        <td>Address</td>
-        <td>
-            <% unless @user.street_address.blank? %>
-                <%= @user.street_address %><br>
-            <% end %>
-            <% unless @user.city.blank? %>
-                <%= @user.city + ((@user.state.blank? && @user.postal_code.blank?) ? '' : ', ') %>
-            <% end %>
-            <% unless @user.state.blank? %>
-                <%= @user.state + ' ' %>
-            <% end %>
-            <% unless @user.postal_code.blank? %>
-                <%= @user.postal_code.to_s %>
-            <% end %>
-        </td>
-      </tr>
+      <% unless (@user.mobile_phone.blank? && @user.home_phone.blank? && @user.work_phone.blank?) %>
+          <tr>
+            <td>Phone</td>
+            <td>
+                <abbr title="Mobile">C:</abbr>&nbsp;<%= number_to_phone(@user.mobile_phone, area_code: true) %><br>
+                <abbr title="Home">H:</abbr>&nbsp;<%= number_to_phone(@user.home_phone, area_code: true) %><br>
+                <abbr title="Work">W:</abbr>&nbsp;<%= number_to_phone(@user.work_phone, area_code: true) %>
+            </td>
+          </tr>
+      <% end %>
+      <% unless (@user.street_address.blank? && @user.city.blank? && @user.postal_code.blank?) %>
+          <tr>
+            <td>Address</td>
+            <td>
+                <% unless @user.street_address.blank? %>
+                    <%= @user.street_address %><br>
+                <% end %>
+                <% unless @user.city.blank? %>
+                    <%= @user.city + ((@user.state.blank? && @user.postal_code.blank?) ? '' : ', ') %>
+                <% end %>
+                <% unless @user.state.blank? %>
+                    <%= @user.state + ' ' %>
+                <% end %>
+                <% unless @user.postal_code.blank? %>
+                    <%= @user.postal_code.to_s %>
+                <% end %>
+            </td>
+          </tr>
       <% end %>
       <% unless @user.birthday.blank? %>
           <tr>

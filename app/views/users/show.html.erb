@@ -22,8 +22,14 @@
             <% unless @user.street_address.blank? %>
                 <%= @user.street_address %><br>
             <% end %>
-            <% unless @user.city.blank? || @user.state.blank? %>
-                <%= @user.city + ', ' + @user.state + ' ' %>
+            <% unless @user.city.blank? %>
+                <%= @user.city %>
+            <% end %>
+            <% unless @user.city.blank? || (@user.state.blank? && @user.postal_code.blank?) %>
+                <%= ', ' %>
+            <% end %>
+            <% unless @user.state.blank? %>
+                <%= @user.state + ' ' %>
             <% end %>
             <% unless @user.postal_code.blank? %>
                 <%= @user.postal_code.to_s %>

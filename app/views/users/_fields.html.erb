@@ -101,8 +101,12 @@
 <%= f.password_field :password_confirmation %>
 
 <% if current_user.admin? %>
-    <%= f.check_box :admin %>
+    <%= f.check_box :admin,
+        disabled: current_user.id == @user.id %>
     <%= f.label :admin, class: 'input-inline' %>
+    <% if current_user.id == @user.id %>
+        <span class="tip">Cannot remove from self</span>
+    <% end %>
     <div><br></div>
     <%= f.label :family_id, 'Member of Family' %>
     <%= f.select :family_id,

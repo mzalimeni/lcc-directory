@@ -9,7 +9,11 @@ class UsersController < RestrictedController
   helper_method :spouse_options
 
   def new
-    @user = User.new(user_params)
+    if params[:user]
+      @user = User.new(user_params)
+    else
+      @user = User.new
+    end
   end
 
   def create

@@ -11,7 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141122185655) do
+ActiveRecord::Schema.define(version: 20150109015842) do
+
+  create_table "children", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "preferred_name"
+    t.date     "birthday"
+    t.integer  "family_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "children", ["family_id"], name: "index_children_on_family_id"
+  add_index "children", ["first_name"], name: "index_children_on_first_name"
+  add_index "children", ["last_name"], name: "index_children_on_last_name"
+  add_index "children", ["preferred_name"], name: "index_children_on_preferred_name"
 
   create_table "families", force: true do |t|
     t.integer  "head_id"

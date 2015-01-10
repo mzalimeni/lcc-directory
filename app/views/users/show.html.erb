@@ -48,17 +48,34 @@
             <td><%= link_to @user.spouse.full_name, @user.spouse %></td>
           </tr>
       <% end %>
-      <% unless @family.blank? %>
+      <% unless @family.blank? && @children.blank? && !current_user? && !admin_user? %>
           <tr>
             <td>Family</td>
             <td>
               <ul class="family">
-                <% @family.each do |member| %>
-                    <li>
-                      <%= link_to member.full_name, member %>
-                    </li>
+                <% unless @family.blank? %>
+                    <% @family.each do |member| %>
+                        <li>
+                          <%= link_to member.full_name, member %>
+                        </li>
+                    <% end %>
+                <% end %>
+                <% unless @children.blank? %>
+                    <% @children.each do |child| %>
+                        <li>
+                          <% if current_user? || admin_user? %>
+                              <%= link_to child.full_name, edit_child_path(child) %>
+                          <% else %>
+                              <%= child.full_name %>
+                          <% end %>
+                        </li>
+                    <% end %>
                 <% end %>
               </ul>
+              <% if current_user? || admin_user? %>
+                  <%= link_to('Add child', user_new_child_path(@user),
+                              class: 'btn btn-default', style: 'margin-top: 10px') %>
+              <% end %>
             </td>
           </tr>
       <% end %>

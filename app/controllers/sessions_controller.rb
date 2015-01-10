@@ -23,4 +23,8 @@ class SessionsController < ApplicationController
     redirect_to root_url
   end
 
+  def cancel_edit
+    redirect_from_cancelled_edit
+  end
+
 end

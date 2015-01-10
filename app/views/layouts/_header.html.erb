@@ -5,8 +5,8 @@
     </div>
     <ul class="nav navbar-nav navbar-right">
       <% if signed_in? %>
-          <% if current_page?(new_user_path) %>
-              <li><%= link_to 'Cancel Edit', admin_path %></li>
+          <% if current_page?(new_user_path) || (params[:id] && current_page?(controller: 'children', action: 'edit')) %>
+              <li data-no-turbolink><%= link_to 'Cancel Edit', cancel_edit_path %></li>
           <% else %>
               <% unless @user.blank? || @user.id.blank? %>
                   <% if current_user? || admin_user? %>

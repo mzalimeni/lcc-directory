@@ -15,6 +15,11 @@ LccDirectory::Application.routes.draw do
   match '/search',    to: 'users#search', 	      via: 'get'
   
   resources :users
+  resources :children
+
+  match '/users/:id/child/new',  to: 'children#new',      via: 'get', as: 'user_new_child'
+  match '/children/promote/:id', to: 'children#promote',  via: 'get', as: 'promote'
+  match '/edit/cancel',          to: 'sessions#cancel_edit', via: 'get', as: 'cancel_edit'
 
   resources :sessions, only: [:new, :create, :destroy]
   match '/signin',  to: 'sessions#new',         via: 'get'

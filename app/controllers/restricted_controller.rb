@@ -4,7 +4,7 @@ class RestrictedController < ApplicationController
 
     #Before filters
 
-    def signed_in_user(notice="Please sign in")
+    def signed_in_user(notice='Please sign in')
       unless signed_in?
         store_location
         flash[:warning] = notice

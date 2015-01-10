@@ -1,0 +1,10 @@
+<% provide(:title, 'Add child') %>
+<h1>Add child for <%= @user.full_name %>:</h1>
+
+<div class="form-group edit-form">
+  <%= form_for(@child) do |f| %>
+      <%= render 'fields', f: f %>
+      <div><br></div>
+      <%= f.submit 'Add child', class: 'btn btn-large btn-primary' %>
+  <% end %>
+</div>

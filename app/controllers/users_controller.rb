@@ -9,7 +9,7 @@ class UsersController < RestrictedController
   helper_method :spouse_options
 
   def new
-    @user = User.new
+    @user = User.new(user_params)
   end
 
   def create
@@ -30,6 +30,7 @@ class UsersController < RestrictedController
       end
     end
     @family = @user.family
+    @children = @user.children
   end
 
   def all

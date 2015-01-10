@@ -25,7 +25,7 @@ module SessionsHelper
   end
 
   def admin_user?(user=current_user)
-    user.admin?
+    user ? user.admin? : false
   end
 
   def sign_out
@@ -42,6 +42,15 @@ module SessionsHelper
 
   def store_location
     session[:return_to] = request.url if request.get?
+  end
+
+  def redirect_from_cancelled_edit
+    redirect_to(session[:return_from_edit])
+    session.delete(:return_from_edit)
+  end
+
+  def store_edit_return(url)
+    session[:return_from_edit] = url
   end
 
 end

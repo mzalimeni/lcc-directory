@@ -1,0 +1,14 @@
+<% provide(:title, 'Edit child') %>
+<h1>Update child info</h1>
+
+<div class="form-group, edit-form">
+  <%= form_for(@child) do |f| %>
+      <%= render 'fields', f: f %>
+      <div><br></div>
+      <%= f.submit 'Save changes', class: 'btn btn-primary' %>
+      <div><br></div>
+      <%= link_to 'Promote to user', promote_path(@child), class: 'btn btn-default' %>
+      <%= link_to 'Delete', @child, method: :delete,
+                  confirm: 'Delete ' + @child.full_name + '?', class: 'btn btn-default' %>
+  <% end %>
+</div>

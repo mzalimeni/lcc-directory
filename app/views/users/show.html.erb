@@ -11,9 +11,15 @@
           <tr>
             <td>Phone</td>
             <td>
+              <% unless @user.mobile_phone.blank? %>
                 <abbr title="Mobile">C:</abbr>&nbsp;<%= number_to_phone(@user.mobile_phone, area_code: true) %><br>
+              <% end %>
+              <% unless @user.home_phone.blank? %>
                 <abbr title="Home">H:</abbr>&nbsp;<%= number_to_phone(@user.home_phone, area_code: true) %><br>
+              <% end %>
+              <% unless @user.work_phone.blank? %>
                 <abbr title="Work">W:</abbr>&nbsp;<%= number_to_phone(@user.work_phone, area_code: true) %>
+              <% end %>
             </td>
           </tr>
       <% end %>

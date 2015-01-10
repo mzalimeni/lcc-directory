@@ -85,17 +85,28 @@ class User < ActiveRecord::Base
     spouse_id.blank? ? nil : User.find_by_id(spouse_id)
   end
 
+  # user's + spouse's adult family members (User, not Child, models)
   def family
-    # user's adult children + spouse's children (User, not Child, models)
-    users = User.where('family_id = ? AND id != ?', family_id, id)
-    users += User.where('family_id = ? AND id != ?', spouse_id, spouse_id) unless spouse_id.blank?
+    # if this user is head of household, do not return self
+    users = User.where(family_id: family_id).where.not(id: id) # all family members minus self
+    users += User.where(family_id: spouse_id).where.not(id: spouse_id) unless spouse_id.blank? # in spouse's family
+
     return users
   end
 
+  # user's non-adult children + spouse's non-adult children (Child models)
   def children
-    # user's non-adult children + spouse's non-adult children (Child models)
     children = Child.where(family_id: family_id)
-    children += Child.where(family_id: spouse_id)
+
+    # add children of head of household's spouse
+    if family_id == id
+      # this user is head of household, use current spouse_id
+      children += Child.where(family_id: spouse_id) unless spouse_id.blank?
+    else
+      head_of_household = User.find_by_id(family_id)
+      children += Child.where(family_id: head_of_household.spouse_id) unless head_of_household.spouse_id.blank?
+    end
+
     return children
   end
 

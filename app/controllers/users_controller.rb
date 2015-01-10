@@ -30,6 +30,10 @@ class UsersController < RestrictedController
       end
     end
     @family = @user.family
+    if @user.spouse && !@family.blank?
+      # don't show spouse in family list for user view since spouse section exists
+      @family -= [@user.spouse]
+    end
     @children = @user.children
   end
 

@@ -10,7 +10,7 @@
           <% else %>
               <% unless @user.blank? || @user.id.blank? %>
                   <% if current_user? || admin_user? %>
-                      <% unless current_page?(edit_user_path) %>
+                      <% unless current_page?(edit_user_path(@user)) %>
                           <li><%= link_to 'Edit', edit_user_path(@user) %></li>
                       <% else %>
                           <li><%= link_to 'Cancel Edit', user_path(@user) %></li>

@@ -102,7 +102,7 @@ class UsersController < RestrictedController
     children = user.children
     if user.destroy
       success = 'User'
-      if children
+      if children.size > 0
         children.each do |child|
           child.destroy
         end

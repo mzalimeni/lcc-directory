@@ -1,4 +1,6 @@
 class AdminController < RestrictedController
+  include AdminHelper
+
   # all actions are restricted to an admin
   before_action :signed_in_user
   before_action :admin_user
@@ -8,8 +10,7 @@ class AdminController < RestrictedController
   end
 
   def download
-    @users = User.all
-    send_data @users.to_csv, filename: 'lcc_directory_' + Time.current.to_s(:number) + '.csv'
+    send_data directory_as_csv, filename: 'lcc_directory_' + Time.current.to_s(:number) + '.csv'
   end
 
   def upload
@@ -17,23 +18,41 @@ class AdminController < RestrictedController
 
   def import
     if params[:file]
-      result = User.import(params[:file], current_user, params[:replace])
+      result = import_csv(params[:file], current_user, params[:replace])
 
-      if (result[:created_ids].length + result[:updated_ids].length) > 0
+      created_user_ids = result[:created_user_ids]
+      updated_user_ids = result[:updated_user_ids]
+      created_child_ids = result[:created_child_ids]
+      updated_child_ids = result[:updated_child_ids]
+
+      if (created_user_ids.length + updated_user_ids.length +
+          created_child_ids.length + updated_child_ids.length) > 0
         flash.now[:success] = 'Successfully ' +
-            (result[:created_ids].length > 0 ? ' created ' + result[:created_ids].length.to_s : '') +
-            ((result[:created_ids].length > 0 && result[:updated_ids].length > 0) ? ' and ' : '') +
-            (result[:updated_ids].length > 0 ? ' updated ' + result[:updated_ids].length.to_s : '') + ' users'
+            (created_user_ids.length > 0 ? ' created ' + created_user_ids.length.to_s : '') +
+            ((created_user_ids.length > 0 && result[:updated_user_ids].length > 0) ? ' and ' : '') +
+            (updated_user_ids.length > 0 ? ' updated ' + updated_user_ids.length.to_s : '') +
+            ((created_user_ids.length > 0 || updated_user_ids.length > 0) ? ' users' : '') +
+
+            ((created_user_ids.length > 0 || updated_user_ids.length > 0) &&
+                (created_child_ids.length > 0 || updated_child_ids.length > 0) ? ' and ' : '') +
+
+            (created_child_ids.length > 0 ? ' created ' + created_child_ids.length.to_s : '') +
+            ((created_child_ids.length > 0 && updated_child_ids.length > 0) ? ' and ' : '') +
+            (updated_child_ids.length > 0 ? ' updated ' + updated_child_ids.length.to_s : '') +
+            ((created_child_ids.length > 0 || updated_child_ids.length > 0) ? ' children' : '')
       end
 
-      if result[:errors].length > 0
-        error_messages = []
-        warning_messages = []
+      # handle errors
 
-        result[:errors].each_key do |key|
-          count = (result[:errors][key]).size
+      error_messages = []
+      warning_messages = []
+
+      user_errors = result[:user_errors]
+      if user_errors.length > 0
+        user_errors.each_key do |key|
+          count = (user_errors[key]).size
           message = ' import ' + count.to_s + ' user' + (count > 1 ? 's' : '') + ' due to ' +
-              key.to_s.gsub(/_/,' ') + ': ' + result[:errors][key].join(', ')
+              key.to_s.gsub(/_/,' ') + ': ' + user_errors[key].join(', ')
 
           if key == :matching_current_user
             warning_messages.push 'Did not' + message
@@ -41,20 +60,31 @@ class AdminController < RestrictedController
             error_messages.push 'Failed to' + message
           end
         end
+      end
 
-        unless error_messages.blank?
-          flash.now[:danger] = error_messages.join('<br/>').html_safe
-        end
+      child_errors = result[:child_errors]
+      if child_errors.length > 0
+        child_errors.each_key do |key|
+          count = (child_errors[key]).size
+          message = ' import ' + count.to_s + ' child' + (count > 1 ? 'ren' : '') + ' due to ' +
+              key.to_s.gsub(/_/,' ') + ': ' + child_errors[key].join(', ')
 
-        unless warning_messages.blank?
-          flash.now[:warning] = warning_messages.join('<br/>').html_safe
+          error_messages.push 'Failed to' + message
         end
+      end
+
+      unless error_messages.blank?
+        flash.now[:danger] = error_messages.join('<br/>').html_safe
+      end
+
+      unless warning_messages.blank?
+        flash.now[:warning] = warning_messages.join('<br/>').html_safe
       end
     else
       flash.now[:warning] = 'Upload failure: no file selected'
     end
 
-    user_ids = result[:created_ids] + result[:updated_ids];
+    user_ids = result[:created_user_ids] + result[:updated_user_ids];
     @users = User.find(user_ids) unless user_ids.size > 20
     render 'upload'
   end

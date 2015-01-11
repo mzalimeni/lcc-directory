@@ -123,7 +123,7 @@ class UsersController < RestrictedController
     end
 
     def prepare_to_return
-      @users = @users.sort_by! {|user| user.first_name}
+      @users = @users.sort_by! {|user| user.last_name}
       @users = @users.paginate(page: params[:page])
     end
 

@@ -1,11 +1,11 @@
-<% provide(:title, "Edit user") %>
+<% provide(:title, 'Edit user') %>
 <h1>Update user profile</h1>
 
-<div class="form-group, edit-form">
+<div class="form-group edit-form">
     <%= form_for(@user) do |f| %>
       <%= render 'fields', f: f %>
       <div><br></div>
-      <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
+      <%= f.submit 'Save changes', class: 'btn btn-large btn-primary' %>
     <% end %>
 </div>
 <br/>

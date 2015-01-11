@@ -77,4 +77,9 @@ LccDirectory::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  ## Additions
+  # Make select2 play nicely with IE8
+  require 'uglifier'
+  config.assets.js_compressor = Uglifier.new(output: {ascii_only: true, quote_keys: true})
 end

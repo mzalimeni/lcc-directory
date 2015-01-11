@@ -154,15 +154,17 @@ class User < ActiveRecord::Base
         row_hash = row.to_hash
 
         #update date formats to correct the CSV export format
-        date = DateTime.strptime(row_hash['birthday'], '%m/%d/%y')
-        if date
-          birthday_formatted = date.strftime('%Y-%m-%d').to_s
+        if !row_hash['birthday'].blank?
+          date = DateTime.strptime(row_hash['birthday'], '%m/%d/%y') rescue nil
+          if date
+            birthday_formatted = date.strftime('%Y-%m-%d').to_s
+            row_hash['birthday'] = birthday_formatted
+          end
         end
-        row_hash['birthday'] = birthday_formatted
 
         #don't allow the current user to get messed with
         if row_hash['id'] == current_user.id || row_hash['email'].strip == current_user.email
-          errors[:matching_current_user] = [current_user.email]
+          errors[:matching_current_user] = [current_user.full_name]
         else
           user = User.find_by_email(row_hash['email'])
           if user

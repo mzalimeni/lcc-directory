@@ -38,8 +38,9 @@ class ChildrenController < RestrictedController
   def promote
     child = Child.find(params[:id])
     user = User.new(child.attributes)
-    store_edit_return(edit_child_path(child))
-    redirect_to new_user_path(user: user.attributes)
+    store_edit_return edit_child_path(child)
+    store_promoting child.id
+    redirect_to new_user_path(user: user.attributes, promoting: child.id)
   end
 
   def destroy

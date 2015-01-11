@@ -45,12 +45,22 @@ module SessionsHelper
   end
 
   def redirect_from_cancelled_edit
-    redirect_to(session[:return_from_edit])
-    session.delete(:return_from_edit)
+    redirect_to(session[:return_from_edit_url])
+    session.delete(:return_from_edit_url)
   end
 
   def store_edit_return(url)
-    session[:return_from_edit] = url
+    session[:return_from_edit_url] = url
+  end
+
+  def store_promoting(child_id)
+    session[:promoting] = child_id
+  end
+
+  def get_promoting
+    child_id = session[:promoting]
+    session.delete(:promoting)
+    return child_id
   end
 
 end

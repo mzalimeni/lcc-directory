@@ -9,19 +9,33 @@ class UsersController < RestrictedController
   helper_method :spouse_options
 
   def new
-    if params[:user]
+    if params[:promoting]
       @user = User.new(user_params)
+      @promoting = params[:promoting]
     else
+      get_promoting # clear session variable in case it has a stale value
       @user = User.new
     end
   end
 
   def create
     @user = User.new(user_params)
+    if is_promoting?
+      if promotion_valid?
+        @promoted = params[:promoting]
+      else
+        flash[:danger] = 'Invalid child promotion!'
+        redirect_from_cancelled_edit
+        return # short circuit 'create' operations
+      end
+    end
     if @user.save
       flash[:success] = 'User successfully created!'
+      cleanup_promotion
       redirect_to @user
     else
+      store_promoting @promoted # reset session variable since the form has to be resubmitted
+      @promoting = @promoted # same for hidden field, since it's not tied to @user
       render 'new'
     end
   end
@@ -98,7 +112,8 @@ class UsersController < RestrictedController
       :mobile_phone, :home_phone, :work_phone,
       :birthday,
       :directory_public,
-      :password, :password_confirmation
+      :password, :password_confirmation,
+      :promoting # supports child > user promotion, not stored in user model
     def user_params
       if current_user.admin?
         params.require(:user).permit(BASIC_USER_PARAMS + ADMIN_USER_PARAMS)
@@ -120,6 +135,23 @@ class UsersController < RestrictedController
     def spouse_options
       # for married user, just their spouse; for new user or unmarried, anyone unmarried
       @user && @user.spouse.blank? ? @user.everyone_else : User.where(spouse_id: @user.try(:id))
+    end
+
+    def is_promoting?
+      !params[:promoting].blank?
+    end
+
+    def promotion_valid?
+      # check to see if a promotion is valid
+      child_id = get_promoting
+      child_id && (child_id.to_s == params[:promoting])
+    end
+
+    def cleanup_promotion
+      if @promoted
+        Child.delete(@promoted)
+        flash[:success] = 'Child successfully promoted to user!'
+      end
     end
 
 end

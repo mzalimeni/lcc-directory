@@ -54,18 +54,25 @@
             <td><%= link_to @user.spouse.full_name, @user.spouse %></td>
           </tr>
       <% end %>
-      <% unless @family.blank? && @children.blank? && !current_user? && !admin_user? %>
+      <% unless @family.blank? %>
           <tr>
             <td>Family</td>
             <td>
               <ul class="family">
-                <% unless @family.blank? %>
-                    <% @family.each do |member| %>
-                        <li>
-                          <%= link_to member.full_name, member %>
-                        </li>
-                    <% end %>
+                <% @family.each do |member| %>
+                    <li>
+                      <%= link_to member.full_name, member %>
+                    </li>
                 <% end %>
+              </ul>
+            </td>
+          </tr>
+      <% end %>
+      <% unless @children.blank? && !current_user? && !admin_user? %>
+          <tr>
+            <td>Children</td>
+            <td>
+              <ul class="family">
                 <% unless @children.blank? %>
                     <% @children.each do |child| %>
                         <li>

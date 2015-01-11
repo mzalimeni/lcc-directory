@@ -20,8 +20,10 @@ class AdminController < RestrictedController
       result = User.import(params[:file], current_user, params[:replace])
 
       if (result[:created_ids].length + result[:updated_ids].length) > 0
-        flash.now[:success] = 'Successfully created ' + result[:created_ids].length.to_s +
-            (result[:updated_ids].length > 0 ? ' and updated ' + result[:updated_ids].length.to_s : '') + ' users'
+        flash.now[:success] = 'Successfully ' +
+            (result[:created_ids].length > 0 ? ' created ' + result[:created_ids].length.to_s : '') +
+            ((result[:created_ids].length > 0 && result[:updated_ids].length > 0) ? ' and ' : '') +
+            (result[:updated_ids].length > 0 ? ' updated ' + result[:updated_ids].length.to_s : '') + ' users'
       end
 
       if result[:errors].length > 0

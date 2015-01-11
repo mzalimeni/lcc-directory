@@ -98,8 +98,18 @@ class UsersController < RestrictedController
   end
 
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = 'User deleted'
+    user = User.find(params[:id])
+    children = user.children
+    if user.destroy
+      success = 'User'
+      if children
+        children.each do |child|
+          child.destroy
+        end
+        success += ' and children'
+      end
+      flash[:success] = success + ' deleted'
+    end
     redirect_to root_path
   end
 

@@ -73,7 +73,7 @@
        %w(WI WI),
        %w(WV WV),
        %w(WY WY)
-   ], 'OH')
+   ], @user.state.blank? ? 'OH' : @user.state)
 %>
 
 <%= f.label :postal_code %>

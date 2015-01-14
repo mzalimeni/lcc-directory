@@ -33,7 +33,13 @@ class UsersController < RestrictedController
     if @user.save
       flash[:success] = 'User successfully created!'
       cleanup_promotion
-      redirect_to @user
+      if current_user
+        redirect_to @user
+      else
+        # this is a registration - change success and go home
+        flash[:success] = 'Thank you! Please log in to continue'
+        redirect_to root_path
+      end
     else
       store_promoting @promoted # reset session variable since the form has to be resubmitted
       @promoting = @promoted # same for hidden field, since it's not tied to @user
@@ -126,7 +132,7 @@ class UsersController < RestrictedController
       :password, :password_confirmation,
       :promoting # supports child > user promotion, not stored in user model
     def user_params
-      if current_user.admin?
+      if current_user && current_user.admin?
         params.require(:user).permit(BASIC_USER_PARAMS + ADMIN_USER_PARAMS)
       else
         params.require(:user).permit(BASIC_USER_PARAMS)

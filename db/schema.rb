@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150109015842) do
+ActiveRecord::Schema.define(version: 20150114041801) do
 
   create_table "children", force: true do |t|
     t.string   "first_name"
@@ -34,6 +34,15 @@ ActiveRecord::Schema.define(version: 20150109015842) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "no_sqls", force: true do |t|
+    t.string   "key"
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "no_sqls", ["key"], name: "index_no_sqls_on_key"
 
   create_table "users", force: true do |t|
     t.string   "email"

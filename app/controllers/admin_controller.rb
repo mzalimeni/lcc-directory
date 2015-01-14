@@ -1,12 +1,40 @@
 class AdminController < RestrictedController
   include AdminHelper
 
+  helper_method :current_registration_end_to_s_no_tz
+  helper_method :registration_expired
+
   # all actions are restricted to an admin
   before_action :signed_in_user
   before_action :admin_user
 
   def home
     # @user already defined by before filters in RestrictedController
+  end
+
+  def registration
+    @end_date = registration_datetime_to_s_no_tz(DateTime.now + 1.hour)
+  end
+
+  def open_registration
+    begin
+      @end_date = registration_datetime_from_s_no_tz(params[:end_date])
+      set_registration_end(@end_date)
+      flash[:success] = 'Registration will be open until ' + registration_datetime_to_s_no_tz(@end_date) + '!'
+    rescue
+      flash[:danger] = 'Invalid date range'
+    end
+    redirect_to admin_registration_path
+  end
+
+  def close_registration
+    begin
+      set_registration_end(DateTime.new(0))
+      flash[:success] = 'Registration has been closed'
+    rescue
+      flash[:danger] = 'Could not close registration - please contact an administrator'
+    end
+    redirect_to admin_registration_path
   end
 
   def download

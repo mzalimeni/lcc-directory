@@ -100,7 +100,7 @@
 <%= f.label :password_confirmation, 'Confirm Password' %>
 <%= f.password_field :password_confirmation %>
 
-<% if current_user.admin? %>
+<% if signed_in? && current_user.admin? %>
     <%= f.check_box :admin,
         disabled: current_user.id == @user.id %>
     <%= f.label :admin, class: 'input-inline' %>

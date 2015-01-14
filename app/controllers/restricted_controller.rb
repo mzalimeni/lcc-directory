@@ -2,6 +2,8 @@ class RestrictedController < ApplicationController
 
   private
 
+    NOT_ADMINISTRATOR = "Sorry, you're not an administrator"
+
     #Before filters
 
     def signed_in_user(notice='Please sign in')
@@ -14,7 +16,7 @@ class RestrictedController < ApplicationController
 
     def admin_user
       unless current_user.admin?
-        flash[:warning] = "Sorry, you're not an administrator"
+        flash[:warning] = NOT_ADMINISTRATOR
         redirect_to root_url
       end
     end
@@ -22,6 +24,13 @@ class RestrictedController < ApplicationController
     def correct_user
       @user = User.find(params[:id])
       redirect_to(root_url) unless current_user?(@user) || current_user.admin?
+    end
+
+    def allowed_to_create
+      unless !registration_expired || (current_user && current_user.admin?)
+        flash[:warning] = NOT_ADMINISTRATOR
+        redirect_to(root_url)
+      end
     end
 
 end

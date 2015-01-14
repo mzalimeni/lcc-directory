@@ -3,13 +3,16 @@ LccDirectory::Application.routes.draw do
 
   root 'directory#home'
 
-  match '/admin',     to: 'admin#home',           via: 'get'
-  match '/download',  to: 'admin#download',       via: 'get'
-  match '/upload',    to: 'admin#upload',         via: 'get'
+  match '/admin',                     to: 'admin#home',               via: 'get'
+  match '/download',                  to: 'admin#download',           via: 'get'
+  match '/upload',                    to: 'admin#upload',             via: 'get'
+  match '/admin/registration/open',   to: 'admin#open_registration',  via: 'post'
+  match '/admin/registration/close',  to: 'admin#close_registration', via: 'get'
   get 'admin/home'
   get 'admin/download'
   get 'admin/upload'
   post 'admin/import'
+  get 'admin/registration'
 
   match '/all',       to: 'users#all',            via: 'get'
   match '/search',    to: 'users#search', 	      via: 'get'
@@ -17,9 +20,9 @@ LccDirectory::Application.routes.draw do
   resources :users
   resources :children
 
-  match '/users/:id/child/new',  to: 'children#new',      via: 'get', as: 'user_new_child'
-  match '/children/promote/:id', to: 'children#promote',  via: 'get', as: 'promote'
-  match '/edit/cancel',          to: 'sessions#cancel_edit', via: 'get', as: 'cancel_edit'
+  match '/users/:id/child/new',  to: 'children#new',          via: 'get', as: 'user_new_child'
+  match '/children/promote/:id', to: 'children#promote',      via: 'get', as: 'promote'
+  match '/edit/cancel',          to: 'sessions#cancel_edit',  via: 'get', as: 'cancel_edit'
 
   resources :sessions, only: [:new, :create, :destroy]
   match '/signin',  to: 'sessions#new',         via: 'get'

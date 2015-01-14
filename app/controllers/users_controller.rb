@@ -1,9 +1,10 @@
 class UsersController < RestrictedController
   include UsersHelper
 
-  before_action :signed_in_user,  only: [:edit, :update, :create, :destroy]
-  before_action :correct_user,    only: [:edit, :update]
-  before_action :admin_user,      only: [:create, :destroy]
+  before_action :signed_in_user,    only: [:edit, :update, :destroy]
+  before_action :correct_user,      only: [:edit, :update]
+  before_action :admin_user,        only: [:destroy]
+  before_action :allowed_to_create, only: [:new, :create]
 
   helper_method :family_options
   helper_method :spouse_options

@@ -10,6 +10,7 @@
  *
  *= require select2
  *= require select2-bootstrap
+ *= require jquery.datetimepicker
  *= require_self
  *= require_tree .
  */

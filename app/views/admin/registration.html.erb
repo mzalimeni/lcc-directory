@@ -4,7 +4,7 @@
     <% if registration_expired? %>
         <div class="form-group search-form">
           <%= form_tag(admin_registration_open_path, method: 'post') do %>
-              <%= label_tag @end_date, 'Registration end date: ' %>
+              <%= label_tag :end_date, 'Registration end date: ' %>
               <%= text_field_tag(:end_date, @end_date, class: 'form_control datetimepicker', readonly: true) %>
               <%= submit_tag 'Open registration now', class: 'btn btn-large btn-primary' %>
           <% end %>

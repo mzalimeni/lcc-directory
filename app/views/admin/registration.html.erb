@@ -1,7 +1,7 @@
-<h1>Open Registration</h1>
+<h1><%= registration_expired? ? 'Open' : 'Close' %> Registration</h1>
 <br/>
 <div data-no-turbolink>
-    <% if registration_expired %>
+    <% if registration_expired? %>
         <div class="form-group search-form">
           <%= form_tag(admin_registration_open_path, method: 'post') do %>
               <%= label_tag @end_date, 'Registration end date: ' %>
@@ -10,7 +10,7 @@
           <% end %>
         </div>
     <% else %>
-        <div class="center">Registration ends: <%= current_registration_end_to_s_no_tz %></div>
+        <div class="center">Registration ends <%= current_registration_end_to_s %></div>
         <br/>
         <%= link_to 'Close registration', admin_registration_close_path, class: 'btn btn-default' %>
     <% end %>

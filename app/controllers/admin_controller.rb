@@ -1,7 +1,7 @@
 class AdminController < RestrictedController
   include AdminHelper
 
-  helper_method :current_registration_end_to_s_no_tz
+  helper_method :current_registration_end_to_s
   helper_method :registration_expired
 
   # all actions are restricted to an admin
@@ -13,14 +13,14 @@ class AdminController < RestrictedController
   end
 
   def registration
-    @end_date = registration_datetime_to_s_no_tz(DateTime.now + 1.hour)
+    @end_date = registration_time_to_s_no_tz(Time.zone.now + 1.hour)
   end
 
   def open_registration
     begin
-      @end_date = registration_datetime_from_s_no_tz(params[:end_date])
+      @end_date = registration_time_from_s_no_tz(params[:end_date])
       set_registration_end(@end_date)
-      flash[:success] = 'Registration will be open until ' + registration_datetime_to_s_no_tz(@end_date) + '!'
+      flash[:success] = 'Registration will be open until ' + current_registration_end_to_s + '!'
     rescue
       flash[:danger] = 'Invalid date range'
     end
@@ -29,7 +29,7 @@ class AdminController < RestrictedController
 
   def close_registration
     begin
-      set_registration_end(DateTime.new(0))
+      set_registration_end(Time.zone.at(0))
       flash[:success] = 'Registration has been closed'
     rescue
       flash[:danger] = 'Could not close registration - please contact an administrator'

@@ -1,12 +1,13 @@
 module RegistrationHelper
 
-  @@registration_end_lock = Mutex.new  # lock for registration datetime
+  @@registration_end_lock = Mutex.new  # lock for registration time
 
-  REGISTRATION_DATETIME_FORMAT =        '%m/%d/%y  %l:%M %p %z'
-  REGISTRATION_DATETIME_FORMAT_NO_TZ =  '%m/%d/%y  %l:%M %p'
+  REGISTRATION_TIME_FORMAT =            '%m/%d/%y  %l:%M %p %z'
+  REGISTRATION_TIME_FORMAT_NO_TZ =      '%m/%d/%y  %l:%M %p'
+  REGISTRATION_TIME_IS_TODAY_FORMAT =   '%l:%M %p'
 
-  def set_registration_end(datetime)
-    value = registration_datetime_to_s datetime
+  def set_registration_end(time)
+    value = registration_time_to_s time
     @@registration_end_lock.synchronize do
       begin
         registration_end = NoSql.find_by_key(:registration_end)
@@ -25,34 +26,46 @@ module RegistrationHelper
     @@registration_end_lock.synchronize do
       registration_end = NoSql.find_by_key(:registration_end)
       unless registration_end
-        registration_end = NoSql.create(key: :registration_end, value: registration_datetime_to_s(DateTime.new(0)))
+        registration_end = NoSql.create(key: :registration_end, value: registration_time_to_s(Time.at(0)))
       end
     end
-    registration_datetime_from_s registration_end.value
+    registration_time_from_s registration_end.value
   end
 
-  def current_registration_end_to_s_no_tz
-    registration_datetime_to_s_no_tz current_registration_end
+  def current_registration_end_to_s
+    if current_registration_end.today?
+      'today at ' + registration_time_to_s_today(current_registration_end)
+    else
+      if (current_registration_end - 1.day).today?
+        'tomorrow at ' + registration_time_to_s_today(current_registration_end)
+      else
+        registration_time_to_s_no_tz current_registration_end
+      end
+    end
   end
 
-  def registration_datetime_to_s(datetime)
-    datetime.strftime(REGISTRATION_DATETIME_FORMAT)
+  def registration_time_to_s(time)
+    time.strftime(REGISTRATION_TIME_FORMAT)
   end
 
-  def registration_datetime_to_s_no_tz(datetime)
-    datetime.strftime(REGISTRATION_DATETIME_FORMAT_NO_TZ)
+  def registration_time_to_s_no_tz(time)
+    time.strftime(REGISTRATION_TIME_FORMAT_NO_TZ)
   end
 
-  def registration_datetime_from_s(string)
-    DateTime.strptime(string, REGISTRATION_DATETIME_FORMAT)
+  def registration_time_to_s_today(time)
+    time.strftime(REGISTRATION_TIME_IS_TODAY_FORMAT)
   end
 
-  def registration_datetime_from_s_no_tz(string)
-    DateTime.strptime(string + ' ' + DateTime.now.strftime('%z'), REGISTRATION_DATETIME_FORMAT)
+  def registration_time_from_s(string)
+    Time.strptime(string, REGISTRATION_TIME_FORMAT)
   end
 
-  def registration_expired
-    current_registration_end.to_i < DateTime.now.to_i
+  def registration_time_from_s_no_tz(string)
+    Time.strptime(string + ' ' + Time.zone.now.strftime('%z'), REGISTRATION_TIME_FORMAT)
+  end
+
+  def registration_expired?
+    current_registration_end.to_i < Time.zone.now.to_i
   end
 
 end

@@ -37,7 +37,7 @@ class UsersController < RestrictedController
         redirect_to @user
       else
         # this is a registration - change success and go home
-        flash[:success] = 'Thank you! Please log in to continue'
+        flash[:success] = 'Thank you! Please log in to continue.'
         redirect_to root_path
       end
     else

@@ -27,7 +27,7 @@ class RestrictedController < ApplicationController
     end
 
     def allowed_to_create
-      unless !registration_expired || (current_user && current_user.admin?)
+      unless !registration_expired? || (current_user && current_user.admin?)
         flash[:warning] = NOT_ADMINISTRATOR
         redirect_to(root_url)
       end

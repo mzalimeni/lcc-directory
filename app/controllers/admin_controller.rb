@@ -13,16 +13,19 @@ class AdminController < RestrictedController
   end
 
   def registration
-    @end_date = registration_time_to_s_no_tz(Time.zone.now + 1.hour)
   end
 
   def open_registration
     begin
       @end_date = registration_time_from_s_no_tz(params[:end_date])
-      set_registration_end(@end_date)
-      flash[:success] = 'Registration will be open until ' + current_registration_end_to_s + '!'
+      if @end_date < (Time.zone.now + 1.minute)
+        flash[:warning] = 'Please choose a time that is not in the past'
+      else
+        set_registration_end(@end_date)
+        flash[:success] = 'Registration will be open until ' + current_registration_end_to_s + '!'
+      end
     rescue
-      flash[:danger] = 'Invalid date range'
+      flash[:danger] = 'Invalid date range, please try again or contact an administrator'
     end
     redirect_to admin_registration_path
   end

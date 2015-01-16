@@ -8,6 +8,17 @@ $(document).ready(function() {
     }).datetimepicker({
         format: 'm/d/y  g:i a',
         formatTime: 'g:i a',
-        step: 15
+        step: 15,
+        startDate: new Date()
+    });
+
+    var actualEndDateField = $('#end_date');
+    var placeholderText = actualEndDateField.attr('placeholder');
+    actualEndDateField.click(function() {
+        if ($(this).val().trim() == '') {
+            $(this).attr('placeholder', placeholderText);
+        } else {
+            $(this).attr('placeholder', '');
+        }
     });
 });

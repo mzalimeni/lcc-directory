@@ -6,5 +6,5 @@ class ApplicationController < ActionController::Base
   include RegistrationHelper
 
   helper_method :registration_expired
-  helper_method
+  helper_method :last_search
 end

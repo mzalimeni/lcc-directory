@@ -68,15 +68,19 @@ class UsersController < RestrictedController
   end
 
   def search
-    if params[:query].blank?
+    query = params[:query]
+    store_last_search(query)
+
+    if query.blank?
       redirect_to all_path and return
     end
 
-    query = params[:query].gsub(/[^a-zA-Z ]/i, '').gsub(/ +/, ' ') # normalize input to single space alpha
+    query = query.gsub(/[^a-zA-Z ]/i, '').gsub(/ +/, ' ') # normalize input to single space alpha
 
     find_users_matching query
     if @users.size == 1
       flash[:success] = 'Only one user matched your search!'
+      store_last_search(nil) # get rid of last search since there is no results page to return to
       redirect_to @users[0]
     else
       # we've got zero or more than one match, so the shortcut failed - go ahead with full 'like' search

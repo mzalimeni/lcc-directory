@@ -6,6 +6,7 @@ class ChildrenController < RestrictedController
   before_action :allowed_edit,    only: [:edit, :update]
 
   def new
+    store_edit_return user_path(@user)
     @child = Child.new
     @child.family_id = @user.id
   end

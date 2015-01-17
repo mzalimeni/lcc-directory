@@ -63,4 +63,12 @@ module SessionsHelper
     return child_id
   end
 
+  def last_search
+    session[:last_search]
+  end
+
+  def store_last_search(query)
+    session[:last_search] = query
+  end
+
 end

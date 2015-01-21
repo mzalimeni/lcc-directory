@@ -126,12 +126,12 @@ class UsersController < RestrictedController
 
   private
 
-    ADMIN_USER_PARAMS = :admin, :family_id, :spouse_id
+    ADMIN_USER_PARAMS = [ :admin ]
     BASIC_USER_PARAMS = :first_name, :last_name, :preferred_name,
       :email,
       :street_address, :city, :state, :postal_code,
       :mobile_phone, :home_phone, :work_phone,
-      :birthday,
+      :birthday, :family_id, :spouse_id,
       :directory_public,
       :password, :password_confirmation,
       :promoting # supports child > user promotion, not stored in user model
@@ -155,7 +155,7 @@ class UsersController < RestrictedController
 
     def spouse_options
       # for married user, just their spouse; for new user or unmarried, anyone unmarried
-      @user && @user.spouse.blank? ? @user.everyone_else : User.where(spouse_id: @user.try(:id))
+      @user && @user.spouse.blank? ? User.where(spouse_id: nil) : User.where(spouse_id: @user.try(:id))
     end
 
     def is_promoting?

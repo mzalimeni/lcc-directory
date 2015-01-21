@@ -89,7 +89,7 @@ class User < ActiveRecord::Base
   def family
     # if this user is head of household, do not return self
     users = User.where(family_id: family_id).where.not(id: id) # all family members minus self
-    users += User.where(family_id: spouse_id).where.not(id: spouse_id) unless spouse_id.blank? # in spouse's family
+    users += User.where(family_id: spouse_id).where.not(id: id).where.not(id: spouse_id) unless spouse_id.blank? # in spouse's family
 
     return users
   end

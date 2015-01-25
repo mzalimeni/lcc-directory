@@ -10,6 +10,7 @@ class UsersController < RestrictedController
   helper_method :spouse_options
 
   def new
+    store_edit_return(current_user && current_user.admin? ? admin_path : root_path)
     if params[:promoting]
       @user = User.new(user_params)
       @promoting = params[:promoting]

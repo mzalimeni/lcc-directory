@@ -11,14 +11,14 @@
           <% if current_page?(new_user_path) ||
                   (@user && current_page?(user_new_child_path(@user))) ||
                   (params[:id] && current_page?(controller: 'children', action: 'edit')) %>
-              <li data-no-turbolink><%= link_to 'Cancel Edit', cancel_edit_path %></li>
+              <li data-no-turbolink><%= link_to 'Cancel', cancel_edit_path %></li>
           <% else %>
               <% unless @user.blank? || @user.id.blank? %>
                   <% if current_user? || admin_user? %>
                       <% unless current_page?(edit_user_path(@user)) %>
                           <li><%= link_to 'Edit', edit_user_path(@user) %></li>
                       <% else %>
-                          <li><%= link_to 'Cancel Edit', user_path(@user) %></li>
+                          <li><%= link_to 'Cancel', user_path(@user) %></li>
                       <% end %>
                   <% end %>
                   <% if admin_user? %>
@@ -48,8 +48,11 @@
             </ul>
           </li>
       <% else %>
-          <% unless registration_expired? %>
-            <li><%= link_to 'Register', new_user_path %></li>
+          <% unless registration_expired? || current_page?(new_user_path) %>
+              <li><%= link_to 'Register', new_user_path %></li>
+          <% end %>
+          <% if current_page?(new_user_path) %>
+              <li><%= link_to 'Cancel', root_path %></li>
           <% end %>
           <li><%= link_to 'Sign in', signin_path %></li>
       <% end %>

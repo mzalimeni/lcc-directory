@@ -1,26 +1,24 @@
 source 'https://rubygems.org'
 ruby '1.9.3'
 
-gem 'rails', '4.0.4'
-gem 'unicorn'
-gem 'sass', '3.2.13'
-#gem 'bootstrap-sass', '2.3.2.0'
-gem 'bootstrap-sass'
-gem 'sprockets', '2.11.0'
-gem 'bcrypt-ruby', '3.1.2'
-gem 'faker', '1.1.2'
-#gem 'will_paginate', '3.0.4'
-gem 'will_paginate'
-#gem 'bootstrap-will_paginate', '0.0.9'
-gem 'bootstrap-will_paginate'
+gem 'rails', '~> 4.0.4'
+gem 'unicorn', '~> 4.8.3'
+gem 'sass', '~> 3.2.13'
+gem 'bootstrap-sass', '~> 3.3.1.0'
+gem 'sprockets', '~> 2.11.0'
+gem 'bcrypt-ruby', '~> 3.1.2'
+gem 'phony', '~> 2.10.3'
+gem 'faker', '~> 1.1.2'
+gem 'will_paginate', '~> 3.0.7'
+gem 'bootstrap-will_paginate', '~> 0.0.10'
 
-gem 'select2-rails'
-gem 'sass-rails', '4.0.1'
-gem 'uglifier', '2.1.1'
-gem 'coffee-rails', '4.0.1'
-gem 'jquery-rails', '3.0.4'
-gem 'turbolinks', '1.1.1'
-gem 'jbuilder', '1.0.2'
+gem 'select2-rails', '~> 3.5.9.2'
+gem 'sass-rails', '~> 4.0.1'
+gem 'uglifier', '~> 2.1.1'
+gem 'coffee-rails', '~> 4.0.1'
+gem 'jquery-rails', '~> 3.0.4'
+gem 'turbolinks', '~> 1.1.1'
+gem 'jbuilder', '~> 1.0.2'
 gem 'jquery-datetimepicker-rails', '~> 2.4.1.0'
 
 group :development, :test do
@@ -38,6 +36,6 @@ group :doc do
 end
 
 group :production do
-  gem 'pg', '0.15.1'
-  gem 'rails_12factor', '0.0.2'
+  gem 'pg', '~> 0.15.1'
+  gem 'rails_12factor', '~> 0.0.2'
 end

@@ -89,7 +89,7 @@
 <%= f.text_field :work_phone %>
 
 <%= f.label :birthday %>
-<%= f.date_field :birthday %>
+<%= f.text_field :birthday, value: format_datepicker(@user.birthday), class: 'form_control datepicker', readonly: true, placeholder: 'Enter birthday' %>
 
 <%= f.label :family_id, 'Member of Family' %>
 <%= f.select :family_id,

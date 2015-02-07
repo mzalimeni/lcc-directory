@@ -45,7 +45,7 @@
       <% unless @user.birthday.blank? %>
           <tr>
             <td>Birthday</td>
-            <td><%= @user.birthday.to_formatted_s :long %></td>
+            <td><%= format_show(@user.birthday) %></td>
           </tr>
       <% end %>
       <% unless @user.spouse.blank? %>

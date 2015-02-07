@@ -1,5 +1,6 @@
 class UsersController < RestrictedController
   include UsersHelper
+  include DateHelper
 
   before_action :signed_in_user,    only: [:edit, :update, :destroy]
   before_action :correct_user,      only: [:edit, :update]
@@ -8,6 +9,8 @@ class UsersController < RestrictedController
 
   helper_method :family_options
   helper_method :spouse_options
+  helper_method :format_show
+  helper_method :format_datepicker
 
   def new
     store_edit_return(current_user && current_user.admin? ? admin_path : root_path)
@@ -137,6 +140,9 @@ class UsersController < RestrictedController
       :password, :password_confirmation,
       :promoting # supports child > user promotion, not stored in user model
     def user_params
+      if params[:user][:birthday]
+        params[:user][:birthday] = format_internal params[:user][:birthday]
+      end
       if current_user && current_user.admin?
         params.require(:user).permit(BASIC_USER_PARAMS + ADMIN_USER_PARAMS)
       else

@@ -56,6 +56,9 @@ class ChildrenController < RestrictedController
 
     CHILD_PARAMS = :first_name, :last_name, :preferred_name, :birthday, :family_id
     def child_params
+      if params[:child][:birthday]
+        params[:child][:birthday] = format_internal params[:child][:birthday]
+      end
       params.require(:child).permit(CHILD_PARAMS)
     end
 

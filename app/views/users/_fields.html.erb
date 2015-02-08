@@ -80,16 +80,16 @@
 <%= f.text_field :postal_code, maxlength: 5, size: 5 %>
 
 <%= f.label :mobile_phone %>
-<%= f.text_field :mobile_phone %>
+<%= f.text_field :mobile_phone, value: number_to_phone(@user.mobile_phone), class: 'phonenumber' %>
 
 <%= f.label :home_phone %>
-<%= f.text_field :home_phone %>
+<%= f.text_field :home_phone, value: number_to_phone(@user.home_phone), class: 'phonenumber' %>
 
 <%= f.label :work_phone %>
-<%= f.text_field :work_phone %>
+<%= f.text_field :work_phone, value: number_to_phone(@user.work_phone), class: 'phonenumber' %>
 
 <%= f.label :birthday %>
-<%= f.text_field :birthday, value: format_datepicker(@user.birthday), class: 'form_control datepicker', readonly: true, placeholder: 'Enter birthday' %>
+<%= f.text_field :birthday, value: format_date_datepicker(@user.birthday), class: 'form_control datepicker', readonly: true, placeholder: 'Enter birthday' %>
 
 <%= f.label :family_id, 'Member of Family' %>
 <%= f.select :family_id,

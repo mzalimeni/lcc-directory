@@ -9,6 +9,8 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
+    $('input.phonenumber').mask("(999) 999-9999", { placeholder: " " });
+
     $('input.datepicker').click(function() {
         $(this).datetimepicker('show');
     }).datetimepicker({

@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   include ModelsHelper
-  include DateHelper
+  include FormHelper
   belongs_to :family
 
   has_secure_password

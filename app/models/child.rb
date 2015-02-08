@@ -1,12 +1,12 @@
 class Child < ActiveRecord::Base
   include ModelsHelper
-  include DateHelper
+  include FormHelper
   belongs_to :family
 
   before_save { self.first_name = titleize_with_accents first_name }
   before_save { self.last_name = titleize_with_accents last_name }
   before_save { self.preferred_name = titleize_with_accents preferred_name }
-  before_save { self.birthday = format_internal(birthday) }
+  before_save { self.birthday = format_date_internal(birthday) }
 
   #Validations
   VALID_NAME_REGEX = /\A([a-z]+['\.\- ]?)+\z/i

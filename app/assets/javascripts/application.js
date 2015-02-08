@@ -16,4 +16,5 @@
 //= require turbolinks
 //= require select2
 //= require jquery.datetimepicker
+//= require jquery.maskedinput.min.js
 //= require_tree .

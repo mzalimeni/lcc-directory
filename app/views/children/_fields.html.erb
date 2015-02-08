@@ -10,6 +10,6 @@
 <%= f.text_field :preferred_name %>
 
 <%= f.label :birthday %>
-<%= f.text_field :birthday, value: format_datepicker(@child.birthday), class: 'form_control datepicker', readonly: true, placeholder: 'Enter birthday' %>
+<%= f.text_field :birthday, value: format_date_datepicker(@child.birthday), class: 'form_control datepicker', readonly: true, placeholder: 'Enter birthday' %>
 
 <%= f.hidden_field :family_id %>

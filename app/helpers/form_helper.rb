@@ -6,7 +6,7 @@ module FormHelper
   end
 
   def format_date_show(date)
-    date.strftime('%B %d').to_s rescue nil
+    date.strftime('%B %_d').to_s rescue nil
   end
 
   def format_date_datepicker(date)

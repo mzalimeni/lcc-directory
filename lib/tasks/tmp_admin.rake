@@ -1,6 +1,6 @@
 namespace :db do
   desc "Create temporary admin"
-  task populate: :environment do
+  task tmpadmin: :environment do
     User.create!(first_name: "Admin",
                  last_name: "Temp",
                  email: "admin@lccdirectory.foo",

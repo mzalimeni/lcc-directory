@@ -9,18 +9,9 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    $('input.phonenumber').mask("(999) 999-9999", { placeholder: " " });
-
-    $('input.datepicker').click(function() {
-        $(this).datetimepicker('show');
-    }).datetimepicker({
-        format: 'm/d',
-        startDate: new Date(),
-        timepicker: false,
-        onShow: function() {
-            $(".xdsoft_label.xdsoft_year").hide();
-        }
-    });
+    setInputHelpers();
+    ensureHelpersLoaded(800);
+    ensureHelpersLoaded(3000);
 
     var actualBirthdayField = $('#birthday');
     var placeholderText = actualBirthdayField.attr('placeholder');
@@ -32,3 +23,26 @@ $(document).ready(function() {
         }
     });
 });
+
+function setInputHelpers() {
+    $('input.phonenumber').mask("(999) 999-9999", { placeholder: " " });
+
+    $('input.datepicker').click(function() {
+        $(this).datetimepicker('show');
+    }).datetimepicker({
+        format: 'm/d',
+        startDate: new Date(),
+        timepicker: false,
+        scrollInput: false,
+        onShow: function() {
+            $(".xdsoft_label.xdsoft_year").hide();
+        }
+    });
+}
+
+function ensureHelpersLoaded(millis) {
+    var ensureInterval = setInterval(function() {
+        setInputHelpers();
+        clearInterval(ensureInterval);
+    }, millis);
+}

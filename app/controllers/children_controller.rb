@@ -1,4 +1,5 @@
 class ChildrenController < RestrictedController
+  include FormHelper
 
   before_action :signed_in_user
   before_action :allowed_new,     only: [:new]

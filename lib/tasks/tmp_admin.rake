@@ -3,7 +3,7 @@ namespace :db do
   task tmpadmin: :environment do
     User.create!(first_name: "Admin",
                  last_name: "Temp",
-                 email: "admin@lccdirectory.foo",
+                 email: "tmpadmin@lccdirectory.com",
                  street_address: "123 Directory Dr. Apt. 9",
                  city: "Columbus",
                  state: "OH",

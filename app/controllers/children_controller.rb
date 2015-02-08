@@ -6,6 +6,9 @@ class ChildrenController < RestrictedController
   before_action :allowed_create,  only: [:create]
   before_action :allowed_edit,    only: [:edit, :update]
 
+  helper_method :format_date_show
+  helper_method :format_date_datepicker
+
   def new
     store_edit_return user_path(@user)
     @child = Child.new

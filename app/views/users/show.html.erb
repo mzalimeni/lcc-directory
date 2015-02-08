@@ -81,6 +81,9 @@
                           <% else %>
                               <%= child.full_name %>
                           <% end %>
+                          <% unless child.birthday.blank? %>
+                              <%= ' (' + format_date_show(child.birthday) + ')' %>
+                          <% end %>
                         </li>
                     <% end %>
                 <% end %>

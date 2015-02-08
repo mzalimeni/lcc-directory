@@ -9,7 +9,7 @@
               <li><%= link_to 'Back', last_search == nil ? root_path : search_path(query: last_search) %></li>
           <% end %>
           <% if current_page?(new_user_path) ||
-                  (@user && current_page?(user_new_child_path(@user))) ||
+                  (@user && !@user.id.blank? && current_page?(user_new_child_path(@user))) ||
                   (params[:id] && current_page?(controller: 'children', action: 'edit')) %>
               <li data-no-turbolink><%= link_to 'Cancel', cancel_edit_path %></li>
           <% else %>

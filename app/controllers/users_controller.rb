@@ -140,22 +140,22 @@ class UsersController < RestrictedController
       :password, :password_confirmation,
       :promoting # supports child > user promotion, not stored in user model
     def user_params
+      normalize_phone_param!(params, :mobile_phone)
+      normalize_phone_param!(params, :home_phone)
+      normalize_phone_param!(params, :work_phone)
       if !params[:user][:birthday].blank?
         params[:user][:birthday] = format_date_internal params[:user][:birthday]
-      end
-      if !params[:user][:mobile_phone].blank?
-        params[:user][:mobile_phone] = Phony.normalize(params[:user][:mobile_phone])
-      end
-      if !params[:user][:home_phone].blank?
-        params[:user][:home_phone] = Phony.normalize(params[:user][:home_phone])
-      end
-      if !params[:user][:work_phone].blank?
-        params[:user][:work_phone] = Phony.normalize(params[:user][:work_phone])
       end
       if current_user && current_user.admin?
         params.require(:user).permit(BASIC_USER_PARAMS + ADMIN_USER_PARAMS)
       else
         params.require(:user).permit(BASIC_USER_PARAMS)
+      end
+    end
+
+    def normalize_phone_param!(params, phone_param)
+      if !params[:user][phone_param].blank?
+        params[:user][phone_param] = params[:user][phone_param].gsub(/[ \-\(\)]/, '')
       end
     end
 

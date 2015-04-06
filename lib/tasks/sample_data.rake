@@ -12,7 +12,6 @@ namespace :db do
                  home_phone: "9194442222",
                  work_phone: "9192227777",
                  birthday: Time.local(1960, 12, 12),
-                 directory_public: true,
                  password: "admin1",
                  password_confirmation: "admin1",
                  admin: true)
@@ -30,7 +29,6 @@ namespace :db do
       home_phone = rand(6141000000..6149999999)
       work_phone = rand(6141000000..6149999999)
       birthday = Time.local(rand(1960..2005),rand(1..12),rand(1..28))
-      directory_public = (rand(0..15) === 0)
       password  = "password"
       User.create!(first_name: first_name,
                    last_name: last_name,
@@ -43,7 +41,6 @@ namespace :db do
                    home_phone: home_phone,
                    work_phone: work_phone,
                    birthday: birthday,
-                   directory_public: directory_public,
                    password: password,
                    password_confirmation: password)
     end

@@ -53,10 +53,8 @@ class UsersController < RestrictedController
  
   def show
     @user = User.find(params[:id])
-    unless @user.directory_public
-      if signed_in_user('Please sign in to view ' + @user.full_name + '\'s profile')
-        # if member is public or user is signed in, allow view - otherwise this forces sign-in, so we're good
-      end
+    if signed_in_user('Please sign in to view ' + @user.full_name + '\'s profile')
+      # if user is signed in, allow view - otherwise this forces sign-in, so we're good
     end
     @family = @user.family
     if @user.spouse && !@family.blank?
@@ -136,7 +134,6 @@ class UsersController < RestrictedController
       :street_address, :city, :state, :postal_code,
       :mobile_phone, :home_phone, :work_phone,
       :birthday, :family_id, :spouse_id,
-      :directory_public,
       :password, :password_confirmation,
       :promoting # supports child > user promotion, not stored in user model
     def user_params

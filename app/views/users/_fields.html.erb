@@ -102,9 +102,6 @@
 <%= f.select :spouse_id,
              spouse_options.sort_by{|user| user.first_name}.collect {|m| [ m.full_name, m.id ] },
              {include_blank: 'None'} %>
-
-<%= f.check_box :directory_public %>
-<%= f.label :directory_public, 'Make profile public' %>
 <div><br></div>
 <%= f.label :password %>
 <%= f.password_field :password %>

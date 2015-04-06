@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150114041801) do
+ActiveRecord::Schema.define(version: 20150223175614) do
 
   create_table "children", force: true do |t|
     t.string   "first_name"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20150114041801) do
     t.datetime "updated_at"
     t.string   "password_digest"
     t.string   "remember_token"
-    t.boolean  "admin",            default: false
+    t.boolean  "admin",           default: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "preferred_name"
@@ -64,7 +64,6 @@ ActiveRecord::Schema.define(version: 20150114041801) do
     t.date     "birthday"
     t.integer  "family_id"
     t.integer  "spouse_id"
-    t.boolean  "directory_public", default: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
